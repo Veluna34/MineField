@@ -259,7 +259,7 @@ h1, h3, h4 {
   <!-- Story Modal -->
   <div id="storyModal" class="position-fixed top-50 start-50 translate-middle bg-dark text-white border rounded p-4 shadow-lg" style="display:none; z-index: 1001; width: 400px; max-width: 90%;">
     <h4 id="storyTitle">Welcome Agent 5 (AKA The Minesweeper)</h4>
-    <img class="noir" src="/Noir.png" alt="Agent Image" style="display:block; margin:0 auto; width:200px; border-radius:15px;">
+    <img class="noir" src="./static/Noir.png" alt="Agent Image" style="display:block; margin:0 auto; width:200px; border-radius:15px;">
     <p id="storyContent" style="min-height: 120px;"></p>
     <div class="text-end">
       <button id="nextBtn" class="btn btn-warning">Next</button>
@@ -310,7 +310,6 @@ h1, h3, h4 {
 </html>
 
 <script>
-const socket = new WebSocket('ws://' + window.location.host);
 const maze = document.getElementById('maze');
 const scoreDisplay = document.getElementById('score');
 const livesDisplay = document.getElementById('lives');
