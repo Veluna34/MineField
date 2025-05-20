@@ -1,0 +1,1727 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Twist & Turns - Solo Mode</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+.bg-gauntlet {
+  background: radial-gradient(circle at center, #170050, #000000);  --bs-bg-opacity: 1;
+  color: #00ffcc;
+  font-family: 'Courier New', monospace;
+
+}
+
+h1, h3, h4 {
+  text-transform: uppercase;
+  font-weight: 700;
+  color: #00ffcc;
+  text-align: center;
+}
+
+    #maze .cell {
+      width: 27px;
+      height: 27px;
+      display: inline-block;
+      border: 1px solid #444;
+      transition: transform 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
+    }
+#mazeWrapper {
+  min-height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+#maze {
+  width: fit-content;
+  margin: 0 auto;
+  display: grid;
+  justify-content: center;
+}
+
+@keyframes safePulse {
+  0% { box-shadow: 0 0 8px 3px #00ccff; }
+  50% { box-shadow: 0 0 15px 6px #00ffff; }
+  100% { box-shadow: 0 0 8px 3px #00ccff; }
+}
+
+
+    .mission-title {
+      color: #00ffcc;
+      font-family: 'Courier New', monospace;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      text-shadow: 0 0 10px #00ffee;
+      margin-bottom: 4rem;
+      margin-top: 3rem;
+      text-shadow: 0 0 10px #000000;
+    }
+.btn-info {
+  background-color: #003344;
+  border-color: #007777;
+  color: #00ffee;
+  font-weight: bold;
+  text-transform: uppercase;
+  margin-top: 30px;
+}
+
+.btn-info:hover {
+  background-color: #004c5c;
+  color: #fff;
+}
+
+.btn-success,
+.btn-primary {
+  text-transform: uppercase;
+  font-weight: bold;
+  letter-spacing: 1px;
+  font-family: 'Courier New', monospace;
+}
+
+
+.btn-success {
+  background-color: #003f3f;
+  border-color: #00ffaa;
+  color: #00ffaa;
+  margin-top: .5em;
+}
+
+.btn-primary {
+  background-color: #00294d;
+  border-color: #00bfff;
+  color: #00bfff;
+}
+
+.btn-success:hover {
+  background-color: #006f6f;
+  color: white;
+}
+
+.trap { background-color: red !important; }
+    .player { background-color: lime !important; }
+    .visible { opacity: 1; }
+    .other-player { background-color: cyan !important; }
+    .suspicious { background-color: orange !important; }
+    .marked { background-color: yellow !important; }
+    .dodge-message {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: rgba(0, 255, 0, 0.85);
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-weight: bold;
+      font-size: 1.2rem;
+      z-index: 1000;
+      animation: fadeOut 2s ease-in-out forwards;
+    }
+    @keyframes fadeOut {
+      0% { opacity: 1; }
+      80% { opacity: 1; }
+      100% { opacity: 0; }
+    }
+    @keyframes dangerPulse {
+  0% { box-shadow: 0 0 5px 2px red; }
+  50% { box-shadow: 0 0 25px 10px red; }
+  100% { box-shadow: 0 0 5px 2px red; }
+}
+
+.cell.hidden {
+  background-color: #111 !important;
+}
+
+
+
+.dodge-message {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(0, 255, 0, 0.9);
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: bold;
+  font-size: 1.2rem;
+  z-index: 1000;
+  animation: fadeOut 2s ease-in-out forwards;
+}
+
+#storyOverlay {
+  background-color: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(2px); /* optional blur effect */
+}
+
+#storyModal {
+  background: radial-gradient(#001f2f, #000);
+  border: 2px solid #00ffee;
+  box-shadow: 0 0 30px #00ffee;
+  color: #00ffee;
+  font-family: 'Courier New', monospace;
+  text-align: center;
+}
+
+
+
+
+@keyframes fadeOut {
+  0% { opacity: 1; }
+  80% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+@keyframes flashReveal {
+  0%   { background-color: #00ffcc; transform: scale(1.1); }
+  100% { background-color: transparent; transform: scale(1); }
+}
+
+@keyframes screenShake {
+  0% { transform: translate(0, 0); }
+  25% { transform: translate(-10px, 0); }
+  50% { transform: translate(10px, 0); }
+  75% { transform: translate(-10px, 0); }
+  100% { transform: translate(0, 0); }
+}
+.shake {
+  animation: screenShake 0.3s ease;
+}
+
+.noir{
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 200px;
+  height: auto;
+  border-radius: 15px;
+}
+
+.badge {
+  font-family: 'Courier New', monospace;
+  font-size: 1rem;
+  padding: 0.6rem 1rem;
+  border-radius: 12px;
+}
+
+
+@keyframes beaconPulse {
+  0%   { box-shadow: 0 0 5px 2px yellow; transform: scale(1); }
+  50%  { box-shadow: 0 0 15px 6px orange; transform: scale(1.1); }
+  100% { box-shadow: 0 0 5px 2px yellow; transform: scale(1); }
+}
+
+.beacon {
+  animation: beaconPulse 1s infinite;
+  z-index: 2;
+}
+
+
+
+.mb-4{
+    margin-bottom: 5rem !important;
+}
+
+.flash-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: white;
+  opacity: 0;
+  z-index: 9999;
+  pointer-events: none;
+  transition: opacity 0.0s ease;
+  background: #000000; /* neon blue flash */
+
+}
+
+.welcome{
+      text-shadow: 0 0 10px #00ffee;
+}
+  </style>
+</head>
+<body class="bg-gauntlet text-white">
+  <div class="container-fluid py-4" id="titleScreen">
+    <h1 class="welcome"> You Have Reached: The MineField </h1>
+    <h1 class="mission-title">YOUR MISSION: ENTER THE GAUNTLET</h1>
+    <h3 id="mission">Objective: Clear The Field, Discover The Mines</h3>
+    <div class="text-center">
+      <button id="startGameBtn" class="btn btn-success">Initiate Operation</button>
+      <br />
+      <button id="openStoryBtn" class="btn btn-info mt-3">For Agent 5 Only 📖</button>
+    </div>
+  </div>
+
+  <!-- Story Overlay -->
+  <div id="storyOverlay" class="position-fixed top-0 start-0 w-100 h-100 bg-black" style="opacity: 0.6; display: none; z-index: 1000;"></div>
+  <!-- Story Modal -->
+  <div id="storyModal" class="position-fixed top-50 start-50 translate-middle bg-dark text-white border rounded p-4 shadow-lg" style="display:none; z-index: 1001; width: 400px; max-width: 90%;">
+    <h4 id="storyTitle">Welcome Agent 5 (AKA The Minesweeper)</h4>
+    <img class="noir" src="/Noir.png" alt="Agent Image" style="display:block; margin:0 auto; width:200px; border-radius:15px;">
+    <p id="storyContent" style="min-height: 120px;"></p>
+    <div class="text-end">
+      <button id="nextBtn" class="btn btn-warning">Next</button>
+      <button id="closeStoryBtn" class="btn btn-secondary">Close</button>
+    </div>
+  </div>
+
+  <!-- === Game Section === -->
+  <div id="gameSection" class="d-none d-flex align-items-center justify-content-center" style="min-height: 100vh;">
+    <div class="d-flex align-items-center justify-content-center" style="gap: 80px;">
+      <div id="scoreboard" class="text-center" style="display:none; min-width: 250px;">
+        <h4 id="finalOutcome" class="text-info">Final Outcome</h4>
+        <table class="table table-dark table-bordered w-auto mx-auto">
+          <thead>
+            <tr>
+              <th>Score</th>
+              <th>Dodges</th>
+              <th>Fails</th>
+              <th>Time</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td id="finalScore"></td>
+              <td id="finalDodges"></td>
+              <td id="finalFails"></td>
+              <td id="finalTime"></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div id="mazeWrapper" class="d-flex align-items-center justify-content-center">
+        <div id="maze" class="d-grid gap-0"></div>
+      </div>
+      <div id="liveStats" class="d-flex flex-column align-items-center text-center">
+        <span class="badge bg-success mb-2">Score: <span id="score">0</span></span>
+        <span class="badge bg-danger mb-2">Lives: <span id="lives">3</span></span>
+        <span class="badge bg-warning text-dark mb-2">Time: <span id="timer">60</span>s</span>
+        <span class="badge bg-primary mb-2">Dodges: <span id="dodgeCount">0</span></span>
+        <span class="badge bg-secondary mb-2">Fails: <span id="failCount">0</span></span>
+      </div>
+    </div>
+  </div>
+  <div id="dodgeMessage" class="d-none dodge-message">You dodged the trap!</div>
+  <div id="gameNotification" class="position-fixed top-0 start-50 translate-middle-x mt-3 d-none text-white rounded shadow px-4 py-2 fw-bold text-center" style="z-index:9999; min-width: 250px; font-size: 1.1rem;"></div>
+  <div id="flash" class="flash-overlay"></div>
+</body>
+</html>
+
+<script>
+const socket = new WebSocket('ws://' + window.location.host);
+const maze = document.getElementById('maze');
+const scoreDisplay = document.getElementById('score');
+const livesDisplay = document.getElementById('lives');
+const timerDisplay = document.getElementById('timer');
+const playerId = Math.random().toString(36).substr(2, 9);
+
+let otherPlayers = {};
+const size = 30;
+let score = 0;
+let lives = 3;
+let timeElapsed = 0;
+let dodgeCount = 0;
+let failCount = 0;
+let timerInterval;
+let currentTrapTimeout = null;
+let canDodge = false;
+let dodgeCooldown = false;
+let suspiciousTimer = null;
+let lastTileIndex = null;
+let suspiciousAccumulated = 0;
+let suspiciousInterval = null;
+let totalCells = size * size; // ✅ Define this first
+let TRAP_DAMAGE_DELAY = 500; // Time in ms before damage if not dodged
+let wasDodged = false;
+let SUSPICION_REVEAL_CHANCE = 0.7;
+let comboMultiplier = 1;
+let comboCount = 0;
+let nextBeaconTime = 37; // seconds
+let beaconIndex = null;
+let hasSafeStep = false;
+let dodgeDelay = TRAP_DAMAGE_DELAY; // can be slowed by power-up
+let beaconTimer = null;
+let POWER_UP_TYPES = ['safeStep', 'slowTime', 'speedBoost'];
+let speedBoostActive = false;
+let movementLocked = false;
+let isTyping = false;
+let typingInterval = null;
+let tankActive = false;
+let tankPosition = null;
+let tankTimer = null;
+let tankMoveInterval = null;
+let powerUpTimer = null;
+let mysteryTimer = null;
+let minesHit = 0; // Track how many mines the player has hit
+const SECRET_AGENT_TILE_COUNT = 3; // Number of secret agent tiles to spawn when two mines are hit
+const BULLET_DAMAGE = 1; // Each bullet deals 1 damage
+let secretAgentTiles = []; // Store secret agent tiles
+let bulletTimer = null; // Timer for bullet shooting
+let secretAgentActive = false; // Flag to track if secret agents are active
+
+
+
+
+
+
+mazeData = Array.from({ length: totalCells }, () => ({
+  trap: false,
+  visible: false,
+  triggered: false,
+  suspicious: false,
+  suspicionLevel: 0,
+  marked: false,
+  pingVisible: false,
+  revealedAsClue: false,
+  safeZone: false,
+  neutral: false,
+  showSuspicion: false,
+  powerUp: null, // ✅ must exist here
+  blocker: false,
+  mystery: false,
+
+}));
+
+function triggerFlash() {
+  const flash = document.getElementById('flash');
+  flash.style.opacity = '1';   // Make it full white
+  setTimeout(() => {
+    flash.style.opacity = '0'; // Fade back to normal
+  }, 200); // Flash for 0.2 seconds
+}
+
+
+
+const SAFE_ZONE_RATIO = 1 / 60;  // Fewer safe zones
+const TRAP_SUSPICION_FAKEOUT_CHANCE = 0.2;
+const SUSPICION_VISIBILITY_CHANCE = 0.8;
+
+// === GENERATE MAZE CHANGES ===
+const MAX_YELLOW_PER_TRAP = 2; // Limit yellow tiles per trap
+
+const storyText = `We know it's been 35 years since your last operation — flagging and discovering the mines at Microsoft. But when it comes to those dreaded bombs, nobody can read them like you.
+
+The agency needs you back, one last time. Your mission should you choose to accept it: infiltrate The Gauntlet — a volatile, shifting maze laced with traps, misdirection, and everchangig shifting chaos. Every step could trigger the end. The layout changes. The danger adapts.
+
+Outthink the field. Outsmart the traps. Outlive the maze.
+
+Welcome back, Agent. The gauntlet is waiting.`;
+
+function typeWriter(text, element, speed = 50, callback) {
+  isTyping = true;
+  element.textContent = '';
+  let i = 0;
+  clearInterval(typingInterval);
+
+  typingInterval = setInterval(() => {
+    if (i < text.length) {
+      element.textContent += text.charAt(i);
+      i++;
+    } else {
+      clearInterval(typingInterval);
+      isTyping = false;
+      if (callback) callback();
+    }
+  }, speed);
+}
+
+document.getElementById('openStoryBtn').addEventListener('click', () => {
+  document.getElementById('storyModal').style.display = 'block';
+  document.getElementById('storyOverlay').style.display = 'block';
+  document.getElementById('storyTitle').textContent = 'Welcome Agent 5 (AKA The Minesweeper)';
+  document.getElementById('nextBtn').textContent = 'Next';
+  typeWriter(storyText, document.getElementById('storyContent'));
+});
+
+document.getElementById('closeStoryBtn').addEventListener('click', () => {
+  clearInterval(typingInterval);
+  isTyping = false;
+  document.getElementById('storyModal').style.display = 'none';
+  document.getElementById('storyOverlay').style.display = 'none';
+});
+
+function showFinalScoreboard() {
+  document.getElementById('scoreboard').style.display = 'block';
+
+  const finalTitle = document.getElementById('finalOutcome');
+  const finalScore = document.getElementById('finalScore');
+  const finalDodges = document.getElementById('finalDodges');
+  const finalFails = document.getElementById('finalFails');
+  const finalTime = document.getElementById('finalTime');
+
+  finalScore.textContent = score;
+  finalDodges.textContent = dodgeCount;
+  finalFails.textContent = failCount;
+  finalTime.textContent = timerDisplay.textContent;
+
+  if (lives <= 0) {
+    finalTitle.textContent = 'MISSION FAILED (Mission Training Started)';
+    finalTitle.classList.remove('text-info');
+    finalTitle.classList.add('text-danger');
+    checkWinCondition();
+  } else {
+    finalTitle.textContent = 'MISSION COMPLETE';
+    finalTitle.classList.remove('text-info');
+    finalTitle.classList.add('text-success');
+    checkWinCondition();
+  }
+}
+
+function checkClearCondition() {
+  const allClear = mazeData.every(cell =>
+    cell.trap || cell.visible || cell.safeZone || cell.blocker
+  );
+
+  if (allClear && lives > 0) {
+    clearInterval(timerInterval);
+    clearInterval(powerUpTimer);
+    clearInterval(mysteryTimer);
+    clearInterval(tankTimer);
+
+    showNotification('✅ All clear! Mission complete.', 'success');
+
+    document.getElementById('finalOutcome').textContent = 'MISSION COMPLETE';
+    document.getElementById('finalOutcome').classList.remove('text-danger');
+    document.getElementById('finalOutcome').classList.add('text-success');
+
+    document.getElementById('finalScore').textContent = score;
+    document.getElementById('finalDodges').textContent = dodgeCount;
+    document.getElementById('finalFails').textContent = failCount;
+    document.getElementById('finalTime').textContent = formatTime(timeElapsed);
+
+    document.getElementById('scoreboard').style.display = 'block';
+  }
+}
+
+
+
+document.getElementById('nextBtn').addEventListener('click', () => {
+  clearInterval(typingInterval);
+  isTyping = false;
+
+  const title = document.getElementById('storyTitle');
+  const content = document.getElementById('storyContent');
+
+  if (title.textContent === 'Welcome Agent 5 (AKA The Minesweeper)') {
+    title.textContent = 'The Mission Statement';
+    content.innerHTML = 
+      `🚩 Use arrow keys to move<br>
+      💣 Avoid the red mines<br>
+      💥 Press Q to deactivate the mines<br>
+      ⚠️ Yellow = danger suspicion<br>
+      ⛔ Blockers stop you<br>
+      ❓ Reach the mystery tiles in time<br>
+      💎 Collect power-ups to survive<br>
+      🕒 The board is always changing<br><br>
+    For Security Purposes The Rest Of The Information Has Been Omitted`;
+    document.getElementById('nextBtn').textContent = 'Back';
+  } else {
+    title.textContent = 'Welcome Agent 5 (AKA The Minesweeper)';
+    typeWriter(storyText, content);
+    document.getElementById('nextBtn').textContent = 'Next';
+  }
+});
+
+
+
+// === GENERATE MAZE CHANGES ===
+function generateMaze() {
+  const totalCells = size * size;
+  const trapTargetCount = Math.floor(totalCells * 0.5); // 50% of tiles are traps
+  let trapsPlaced = 0;
+
+  const blockerCount = 32;
+  let blockersPlaced = 0;
+  let safetyTries = 0;
+  const MAX_TRIES = 5000;
+
+  // Initialize all maze tiles
+  mazeData = Array.from({ length: totalCells }, () => ({
+    trap: false,
+    visible: false,
+    triggered: false,
+    suspicious: false,
+    suspicionLevel: 0,
+    marked: false,
+    pingVisible: false,
+    revealedAsClue: false,
+    safeZone: false,
+    neutral: false,
+    showSuspicion: false,
+    powerUp: null,
+    blocker: false,
+    beacon: false
+  }));
+
+  // Safe zones
+  const numSafeZones = Math.floor(totalCells * SAFE_ZONE_RATIO);
+  const safeZoneIndexes = new Set();
+  while (safeZoneIndexes.size < numSafeZones) {
+    safeZoneIndexes.add(Math.floor(Math.random() * totalCells));
+  }
+
+  const safeZoneArray = Array.from(safeZoneIndexes);
+  playerPos = safeZoneArray[Math.floor(Math.random() * safeZoneArray.length)];
+
+  safeZoneIndexes.forEach(index => {
+    mazeData[index].safeZone = true;
+    mazeData[index].visible = true;
+  });
+
+  // Trap clusters (around 30 cluster centers)
+  const dangerTileCount = 30;
+  for (let i = 0; i < dangerTileCount; i++) {
+    const center = Math.floor(Math.random() * totalCells);
+    const row = Math.floor(center / size);
+    const col = center % size;
+
+    if (
+      safeZoneIndexes.has(center) ||
+      center === playerPos ||
+      row < 1 || row >= size - 1 ||
+      col < 1 || col >= size - 1
+    ) continue;
+
+    const directions = [-1, 1, -size, size];
+    let trapsAround = 0;
+
+    directions.forEach(offset => {
+      const target = center + offset;
+      if (
+        target !== playerPos &&
+        !safeZoneIndexes.has(target) &&
+        !mazeData[target].trap &&
+        trapsPlaced < trapTargetCount
+      ) {
+        mazeData[target].trap = true;
+        trapsPlaced++;
+        trapsAround++;
+      }
+    });
+
+    if (trapsAround < 3) i--; // try again if too few traps placed
+    if (trapsPlaced >= trapTargetCount) break;
+  }
+
+  // Fallback: place remaining traps to reach trapTargetCount
+  while (trapsPlaced < trapTargetCount) {
+    const index = Math.floor(Math.random() * totalCells);
+    if (
+      !mazeData[index].trap &&
+      !safeZoneIndexes.has(index) &&
+      index !== playerPos &&
+      !mazeData[index].blocker
+    ) {
+      mazeData[index].trap = true;
+      trapsPlaced++;
+    }
+  }
+
+  // Place blockers
+  while (blockersPlaced < blockerCount && safetyTries < MAX_TRIES) {
+    const index = Math.floor(Math.random() * totalCells);
+    const cell = mazeData[index];
+
+    if (
+      !cell.trap &&
+      !cell.safeZone &&
+      !cell.powerUp &&
+      !cell.blocker &&
+      !cell.beacon &&
+      !cell.neutral
+    ) {
+      cell.blocker = true;
+      cell.visible = false;
+      cell.pingVisible = false;
+      cell.triggered = false;
+      cell.revealedAsClue = false;
+
+      // Clean out everything else to make it a pure blocker
+      cell.trap = false;
+      cell.safeZone = false;
+      cell.powerUp = null;
+      cell.neutral = false;
+      if (index !== playerPos) { 
+  cell.suspicionLevel = 0;
+  cell.revealedAsClue = false;
+  cell.showSuspicion = false;
+}
+
+      cell.revealedAsClue = false;
+
+      blockersPlaced++;
+    }
+
+    safetyTries++;
+  }
+
+  // Ensure player starting tile is visible
+  mazeData[playerPos].visible = true;
+}
+
+
+placePowerUps();
+startBeaconTimer();
+
+function applyCombo() {
+  comboCount++;
+  comboMultiplier = 1 + Math.floor(comboCount / 3);
+  showNotification(`Combo x${comboMultiplier}!, 'info'`);
+  score += 10 * comboMultiplier;
+  scoreDisplay.textContent = score;
+}
+
+function resetCombo() {
+  comboCount = 0;
+  comboMultiplier = 1;
+}
+
+
+function placePowerUps() {
+  mazeData.forEach(cell => cell.powerUp = null);
+  for (let i = 0; i < 5; i++) {
+    const index = Math.floor(Math.random() * totalCells);
+    if (!mazeData[index].trap && !mazeData[index].safeZone) {
+      mazeData[index].powerUp = POWER_UP_TYPES[Math.floor(Math.random() * POWER_UP_TYPES.length)];
+    }
+  }
+}
+
+function collectPowerUp(index) {
+  const cell = mazeData[index];
+  if (!cell.powerUp) return;
+
+  switch (cell.powerUp) {
+  case 'safeStep':
+    hasSafeStep = true;
+    showNotification('🧯 Safe Step Collected!', 'success');
+    break;
+
+  case 'slowTime':
+    dodgeDelay = 1000;
+    showNotification('⚡ Dodge Time Boosted!', 'info');
+    setTimeout(() => dodgeDelay = TRAP_DAMAGE_DELAY, 10000);
+    break;
+
+  case 'speedBoost':
+    speedBoostActive = true;
+    showNotification('🏃‍♂️ Speed Boost Activated!', 'info');
+    setTimeout(() => speedBoostActive = false, 5000);
+    break;
+}
+
+
+  cell.powerUp = null;
+  renderMaze();
+}
+
+function startBeaconTimer() {
+  if (beaconTimer) clearInterval(beaconTimer);
+  beaconTimer = setInterval(() => {
+    nextBeaconTime--;
+    if (nextBeaconTime <= 0) {
+      spawnBeaconTile();
+      nextBeaconTime = 47;
+    }
+  }, 1000);
+}
+
+function spawnBeaconTile() {
+  const directions = [
+    [-1, 0], [1, 0],    // Up, Down
+    [0, -1], [0, 1],    // Left, Right
+    [-1, -1], [-1, 1],  // Diagonals
+    [1, -1], [1, 1]
+  ];
+
+  const playerRow = Math.floor(playerPos / size);
+  const playerCol = playerPos % size;
+
+  const possibleIndices = [];
+
+  for (const [dr, dc] of directions) {
+    const nr = playerRow + dr * 5;
+    const nc = playerCol + dc * 5;
+
+    if (nr >= 0 && nr < size && nc >= 0 && nc < size) {
+      const index = nr * size + nc;
+      possibleIndices.push(index);
+    }
+  }
+
+  if (possibleIndices.length === 0) return;
+
+  beaconIndex = possibleIndices[Math.floor(Math.random() * possibleIndices.length)];
+  mazeData[beaconIndex].beacon = true;
+
+  renderMaze();
+  showNotification('🚨 Reach the Beacon Tile!', 'warning');
+
+  setTimeout(() => {
+    if (playerPos !== beaconIndex) {
+      triggerBeaconFail();
+    }
+    if (mazeData[beaconIndex]) {
+      mazeData[beaconIndex].beacon = false;
+    }
+    beaconIndex = null;
+    renderMaze();
+  }, 20000);
+}
+
+
+function triggerBeaconFail() {
+  showNotification('Missed the beacon! Nearby traps activated!', 'danger');
+
+  const nearbyOffsets = [-1, 1, -size, size, 0];
+  nearbyOffsets.forEach(offset => {
+    const ni = playerPos + offset;
+    if (ni >= 0 && ni < mazeData.length && !mazeData[ni].trap) {
+      mazeData[ni].trap = true;
+      mazeData[ni].beaconSpawned = true; // ✅ mark as beacon-spawned trap
+    }
+  });
+
+  renderMaze();
+}
+
+function spawnMysteryTile() {
+  let index;
+  do {
+    index = Math.floor(Math.random() * mazeData.length);
+  } while (
+    mazeData[index].trap ||
+    mazeData[index].safeZone ||
+    mazeData[index].blocker ||
+    mazeData[index].powerUp ||
+    mazeData[index].beacon ||
+    mazeData[index].mystery ||
+    !mazeData[index].visible
+  );
+
+  mazeData[index].mystery = true;
+  renderMaze();
+  showNotification('🟪 A mystery tile has appeared!', 'info');
+
+  // Start 20s timer
+  setTimeout(() => {
+    if (playerPos === index) {
+      transformMysteryTile(index);
+    } else {
+      punishMissedMysteryTile(index);
+    }
+    mazeData[index].mystery = false;
+    renderMaze();
+  }, 20000);
+}
+
+function transformMysteryTile(index) {
+  const cell = mazeData[index];
+  const types = ['trap', 'safeZone', 'neutral', 'blocker'];
+  const choice = types[Math.floor(Math.random() * types.length)];
+
+  // Reset
+  cell.trap = cell.safeZone = cell.neutral = cell.blocker = false;
+
+  switch (choice) {
+    case 'trap': cell.trap = true; break;
+    case 'safeZone': cell.safeZone = true; break;
+    case 'neutral': cell.neutral = true; break;
+    case 'blocker': cell.blocker = true; break;
+  }
+
+  showNotification(`Mystery tile turned into a ${choice.toUpperCase()}!, 'warning'`);
+}
+
+function punishMissedMysteryTile(index) {
+  const centerRow = Math.floor(index / size);
+  const centerCol = index % size;
+
+  for (let dr = -2; dr <= 2; dr++) {
+    for (let dc = -2; dc <= 2; dc++) {
+      const nr = centerRow + dr;
+      const nc = centerCol + dc;
+      const ni = nr * size + nc;
+
+      if (nr >= 0 && nr < size && nc >= 0 && nc < size) {
+        const cell = mazeData[ni];
+        cell.visible = false;
+        cell.pingVisible = false;
+        cell.suspicionLevel = 0;
+        cell.showSuspicion = false;
+
+        // Randomize the tile
+        const roll = Math.random();
+cell.trap = cell.safeZone = cell.blocker = cell.neutral = false;
+
+if (roll < 0.4) {
+  cell.trap = true;
+} else if (roll > 0.6 ) {
+  cell.neutral = true;
+} else {
+  cell.blocker = true;
+}
+      }
+    }
+  }
+
+  showNotification('⚠️ You missed the mystery tile — the board has changed!', 'danger');
+}
+
+
+function renderMaze() {
+  maze.innerHTML = '';
+maze.style.gridTemplateColumns = `repeat(${size}, 30px)`;
+  document.querySelectorAll('.cell.player').forEach(cell => {
+    cell.classList.remove('player');
+  });
+
+  const suspicionColors = {
+    1: 'navy',
+    2: 'darkgreen',
+    3: 'maroon',
+    4: 'darkviolet',
+    5: 'saddlebrown',
+    6: 'teal',
+    7: 'black',
+    8: 'dimgray'
+  };
+
+  mazeData.forEach((cell, i) => {
+    const div = document.createElement('div');
+    div.classList.add('cell');
+
+    if (tankActive && i === tankPosition) {
+  div.textContent = '🛸';
+  div.style.backgroundColor = '#222';
+  div.style.border = '2px solid cyan';
+  div.style.boxShadow = '0 0 10px cyan';
+}
+
+
+    // Visibility logic
+    if (
+  cell.visible || 
+  cell.pingVisible || 
+  i === playerPos || 
+  Object.values(otherPlayers).includes(i) || 
+  cell.blocker
+) {
+  div.classList.add('visible');
+} else {
+  div.classList.add('hidden');
+}
+
+
+    // === Core Tile Rendering ===
+
+    // Blockers
+    if (cell.blocker && (cell.visible || cell.pingVisible)) {
+  div.classList.add('blocker');
+  div.style.backgroundColor = '#333';
+  div.style.border = '2px solid #888';
+  div.style.boxShadow = 'inset 0 0 6px #111';
+  div.textContent = '🛑'; // or leave as icon if you use one
+
+
+
+    // Safe Zones
+    }else if (cell.safeZone) {
+      div.style.backgroundColor = '#00ccff';
+      div.style.border = '2px solid white';
+    }
+
+    // PowerUps (only if not a blocker/beacon)
+    else if (cell.powerUp && !cell.beacon) {
+      div.textContent = {
+        safeStep: '🧯',
+        slowTime: '⚡',
+        speedBoost: '🏃‍♂️'
+      }[cell.powerUp] || '🔹';
+      div.style.backgroundColor = '#99f';
+    }
+
+    // Beacon tile
+    if (cell.beacon) {
+      div.classList.add('beacon');
+      div.style.backgroundColor = '#ffff00';
+      div.style.border = '2px solid black';
+      div.textContent = '🚨';
+    }
+
+    if (cell.mystery && (cell.visible || cell.pingVisible)) {
+  div.style.backgroundColor = 'purple';
+  div.style.border = '2px dashed white';
+  div.textContent = '?';
+}
+
+
+    // Suspicious clue tiles (shown only if not trap/blocker/safezone)
+    const isNearPlayer = Math.abs(i - playerPos) <= size + 1;
+    if (
+      isNearPlayer &&
+      (cell.visible || cell.pingVisible) &&
+      !cell.trap &&
+      cell.suspicionLevel > 0 &&
+      !cell.safeZone &&
+      !cell.blocker &&
+      !cell.powerUp
+    ) {
+      div.classList.add('suspicious');
+      const levelDiv = document.createElement('div');
+      levelDiv.style.fontSize = '0.8rem';
+      levelDiv.style.fontWeight = 'bold';
+      levelDiv.style.color = suspicionColors[cell.suspicionLevel] || 'white';
+      levelDiv.style.textAlign = 'center';
+      levelDiv.textContent = '!'.repeat(Math.min(cell.suspicionLevel, 3));
+      div.appendChild(levelDiv);
+div.style.backgroundColor = `rgba(255, 255, 0, ${0.3 + 0.15 * cell.suspicionLevel})`;
+    }
+
+    // Neutral (blank) tile – only if not anything else
+    else if (
+      cell.neutral &&
+      !cell.trap &&
+      !cell.blocker &&
+      !cell.safeZone &&
+      !cell.powerUp &&
+      !cell.showSuspicion &&
+      !cell.beacon
+    ) {
+      div.style.backgroundColor = '#222';
+      div.style.border = '1px solid #444';
+      div.textContent = '';
+    }
+
+    // Player
+    if (i === playerPos) {
+      div.classList.add('player');
+      div.classList.remove('hidden');
+      div.classList.add('visible');
+      div.textContent = cell.trap && !canDodge ? '☠️' : '🕵️‍♂️';
+
+      if (cell.trap) {
+        div.style.animation = 'flashReveal 0.3s ease';
+        div.style.backgroundColor = 'red';
+      }
+
+      if (tankActive && i === tankPosition) {
+  div.textContent = '🛸'; // ✅ Drone icon instead of car
+  div.style.backgroundColor = '#222'; // dark stealth background
+  div.style.border = '2px solid cyan'; // neon cyan border
+  div.style.boxShadow = '0 0 10px cyan'; // glowing effect
+}
+
+
+
+      if (cell.blocker) {
+        div.style.backgroundColor = '#333';
+        div.style.border = '2px solid #888';
+        div.style.boxShadow = 'inset 0 0 6px #111';
+      }
+
+      if (cell.neutral) {
+        div.style.backgroundColor = '#222';
+        div.style.border = '1px solid #444';
+        div.textContent = '';
+      }
+    }
+
+    // Other players
+    else if (Object.values(otherPlayers).includes(i)) {
+      div.classList.add('other-player');
+    }
+
+    // Triggered trap tile (not player)
+    else if (cell.triggered && cell.trap) {
+      div.classList.add('trap');
+    }
+
+    if (i === playerPos && cell.suspicionLevel > 0 && !cell.safeZone) {
+  if (suspiciousAccumulated === 1) {
+    div.style.boxShadow = '0 0 10px 5px orange';
+  } else if (suspiciousAccumulated === 2) {
+    div.style.boxShadow = '0 0 15px 10px red';
+  } else if (suspiciousAccumulated >= 3) {
+    div.style.boxShadow = '0 0 20px 15px darkred';
+  }
+  div.style.animation = 'dangerPulse 1s infinite';
+}
+
+if (i === playerPos && cell.safeZone) {
+  div.style.animation = 'safePulse 2s infinite';
+  div.style.boxShadow = '0 0 10px 4px #00ccff';
+}
+
+
+    maze.appendChild(div);
+  });
+
+  // Auto-scroll to player
+  setTimeout(() => {
+    const playerCell = document.querySelector('.cell.player');
+    if (playerCell) {
+      const playerBottom = playerCell.getBoundingClientRect().bottom;
+      const viewportBottom = window.innerHeight;
+      if (playerBottom > viewportBottom - 100) {
+        window.scrollBy({
+          top: playerBottom - viewportBottom + 120,
+          behavior: 'smooth'
+        });
+      }
+    }
+  }, 0);
+}
+
+
+
+
+
+
+function updateVisibility() {
+  const row = Math.floor(playerPos / size);
+  const col = playerPos % size;
+
+  const yellowTileCounts = new Array(mazeData.length).fill(0);
+
+  // Always apply visibility & suspicion near the player
+  for (let r = -1; r <= 1; r++) {
+    for (let c = -1; c <= 1; c++) {
+      const nr = row + r;
+      const nc = col + c;
+      if (nr >= 0 && nc >= 0 && nr < size && nc < size) {
+        const index = nr * size + nc;
+        const cell = mazeData[index];
+        
+        // ✅ Always reveal nearby tiles, including blockers
+        cell.visible = true;
+
+        // Skip if trap or safe zone
+        if (!cell.trap && !cell.safeZone && !cell.blocker) {
+          let count = 0;
+
+          for (let dr = -1; dr <= 1; dr++) {
+            for (let dc = -1; dc <= 1; dc++) {
+              const rr = nr + dr;
+              const cc = nc + dc;
+              const ni = rr * size + cc;
+              if (
+                rr >= 0 && cc >= 0 &&
+                rr < size && cc < size &&
+                mazeData[ni]?.trap
+              ) {
+                count++;
+              }
+            }
+          }
+
+          if (count > 0 && Math.random() < 0.3 && !cell.neutral) {
+            cell.suspicionLevel = count;
+            cell.revealedAsClue = true;
+            cell.showSuspicion = true;
+          } else {
+            cell.suspicionLevel = 0;
+            cell.revealedAsClue = false;
+            cell.showSuspicion = false;
+          }
+
+          // Track yellow tiles used per trap
+          for (let dr = -1; dr <= 1; dr++) {
+            for (let dc = -1; dc <= 1; dc++) {
+              const rr = nr + dr;
+              const cc = nc + dc;
+              const ni = rr * size + cc;
+              if (
+                rr >= 0 && cc >= 0 &&
+                rr < size && cc < size &&
+                mazeData[ni]?.trap
+              ) {
+                yellowTileCounts[ni]++;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  // Sometimes apply suspicion near random traps
+  for (let i = 0; i < mazeData.length; i++) {
+    if (!mazeData[i].trap) continue;
+    if (Math.random() < 0.6) continue; // 40% traps = no clue
+
+    const trapRow = Math.floor(i / size);
+    const trapCol = i % size;
+
+    for (let dr = -1; dr <= 1; dr++) {
+      for (let dc = -1; dc <= 1; dc++) {
+        const nr = trapRow + dr;
+        const nc = trapCol + dc;
+        const ni = nr * size + nc;
+
+        if (
+          nr >= 0 && nc >= 0 && nr < size && nc < size &&
+          !mazeData[ni].trap &&
+          !mazeData[ni].neutral &&
+          !mazeData[ni].showSuspicion &&
+          !mazeData[ni].blocker && // ✅ don't show suspicion on blockers
+          Math.random() < SUSPICION_VISIBILITY_CHANCE &&
+          yellowTileCounts[i] < MAX_YELLOW_PER_TRAP
+        ) {
+          mazeData[ni].suspicionLevel = 1 + Math.floor(Math.random() * 3);
+          mazeData[ni].revealAsClue = true;
+          mazeData[ni].showSuspicion = true;
+          yellowTileCounts[i]++;
+        }
+      }
+    }
+  }
+}
+
+function revealPingClues(centerIndex) {
+  const row = Math.floor(centerIndex / size);
+  const col = centerIndex % size;
+  const range = 2;
+  const pingCount = Math.floor(Math.random() * 5) + 3;
+
+  const candidates = [];
+
+  for (let r = -range; r <= range; r++) {
+    for (let c = -range; c <= range; c++) {
+      const nr = row + r;
+      const nc = col + c;
+      if (nr >= 0 && nc >= 0 && nr < size && nc < size) {
+        const index = nr * size + nc;
+        const cell = mazeData[index];
+
+        if (!cell.visible && !cell.trap && !cell.pingVisible) {
+          candidates.push(index);
+        }
+      }
+    }
+  }
+
+  const selected = [];
+  while (selected.length < pingCount && candidates.length > 0) {
+    const idx = Math.floor(Math.random() * candidates.length);
+    selected.push(candidates.splice(idx, 1)[0]);
+  }
+
+  // Temporarily mark them as ping-visible
+  selected.forEach(index => {
+    mazeData[index].pingVisible = true;
+  });
+
+  renderMaze();
+
+  // Remove the ping after 2 seconds
+  setTimeout(() => {
+    selected.forEach(index => {
+      mazeData[index].pingVisible = false;
+    });
+    renderMaze();
+  }, 2000);
+}
+
+
+
+
+
+
+function movePlayer(dir) {
+  if (movementLocked) return;
+  movementLocked = true;
+  setTimeout(() => movementLocked = false, speedBoostActive ? 80 : 50);
+
+  let newPos = playerPos;
+  if (dir === 'ArrowUp' && playerPos >= size) newPos -= size;
+  if (dir === 'ArrowDown' && playerPos < size * (size - 1)) newPos += size;
+  if (dir === 'ArrowLeft' && playerPos % size !== 0) newPos -= 1;
+  if (dir === 'ArrowRight' && playerPos % size !== size - 1) newPos += 1;
+
+  const targetCell = mazeData[newPos];
+
+  // ✅ Don't move if blocker
+  if (targetCell.blocker) {
+    // Optional: flash or shake the blocker
+    const cellDivs = document.querySelectorAll('.cell');
+    const blockerDiv = cellDivs[newPos];
+    if (blockerDiv) {
+      blockerDiv.style.boxShadow = '0 0 10px 4px white';
+      setTimeout(() => blockerDiv.style.boxShadow = '', 200);
+    }
+    return;
+  }
+
+  // ✅ Now update position
+  playerPos = newPos;
+  const cell = mazeData[playerPos];
+
+  if (
+  !cell.trap && 
+  !cell.safeZone && 
+  !cell.neutral && 
+  !cell.blocker && 
+  !cell.powerUp && 
+  !cell.mystery && 
+  !cell.beacon
+) {
+  cell.suspicionLevel = 1;
+  cell.revealedAsClue = true;
+  cell.showSuspicion = true;
+}
+
+  if (cell.safeZone) {
+    suspiciousAccumulated = 0;
+    if (suspiciousTimer) {
+      clearInterval(suspiciousTimer);
+      suspiciousTimer = null;
+    }
+  }
+
+  if (cell.mystery) {
+  transformMysteryTile(playerPos);
+  cell.mystery = false;
+}
+
+  cell.triggered = true;
+
+  if (cell.suspicionLevel === 0 || !cell.revealedAsClue) {
+    revealPingClues(playerPos);
+    suspiciousAccumulated = 0;
+    if (suspiciousTimer) {
+      clearInterval(suspiciousTimer);
+      suspiciousTimer = null;
+    }
+  }
+
+  collectPowerUp(playerPos);
+
+  if (cell.beacon) {
+    showNotification('✅ Beacon Reached!', 'success');
+    score += 50;
+    scoreDisplay.textContent = score;
+    cell.beacon = false;
+    beaconIndex = null;
+  }
+
+  // Trap logic
+  if (cell.trap) {
+    const cellDivs = document.querySelectorAll('.cell');
+    const currentTile = cellDivs[playerPos];
+    if (currentTile) {
+      currentTile.textContent = '💀';
+      currentTile.style.backgroundColor = 'red';
+      currentTile.style.boxShadow = '0 0 15px 5px crimson';
+      setTimeout(() => {
+        currentTile.style.backgroundColor = '';
+        currentTile.style.boxShadow = '';
+      }, 300);
+    }
+
+    document.body.classList.add('shake');
+    setTimeout(() => document.body.classList.remove('shake'), 300);
+
+    trapTriggeredIndex = playerPos;
+    canDodge = true;
+    trapDodgeWindowActive = true;
+    wasDodged = false;
+
+    if (hasSafeStep) {
+      hasSafeStep = false;
+      showNotification('🧯 Auto-safe used!', 'success');
+      trapDodgeWindowActive = false;
+      canDodge = false;
+      wasDodged = true;
+      return;
+    }
+
+    if (currentTrapTimeout) clearTimeout(currentTrapTimeout);
+    currentTrapTimeout = setTimeout(() => {
+      if (!wasDodged) {
+        takeDamage('You Stepped On A Mine');
+        resetCombo();
+      }
+      trapDodgeWindowActive = false;
+      canDodge = false;
+      trapTriggeredIndex = null;
+    }, dodgeDelay);
+  }
+
+  if ((cell.revealedAsClue && cell.suspicionLevel > 0) || (cell.neutral && !cell.safeZone && !cell.trap && !cell.blocker)) {
+  if (!suspiciousTimer) {
+    suspiciousAccumulated = 0;
+    suspiciousTimer = setInterval(() => {
+      suspiciousAccumulated++;
+
+      // Dynamically apply glow effect while standing too long
+      const cellDivs = document.querySelectorAll('.cell');
+      const playerTile = cellDivs[playerPos];
+      if (playerTile) {
+        if (suspiciousAccumulated === 1) {
+          playerTile.style.boxShadow = '0 0 10px 5px orange';
+        } else if (suspiciousAccumulated === 2) {
+          playerTile.style.boxShadow = '0 0 15px 10px red';
+        } else if (suspiciousAccumulated >= 3) {
+          playerTile.style.boxShadow = '0 0 20px 15px darkred';
+        }
+        playerTile.style.animation = 'dangerPulse 1s infinite';
+      }
+
+      if (suspiciousAccumulated >= 3) {
+        if (cell.neutral) {
+          takeDamage("You stood too long on a blank tile!");
+        } else {
+          takeDamage("You stood too long on a suspicious tile!");
+        }
+        suspiciousAccumulated = 0;
+        clearInterval(suspiciousTimer);
+        suspiciousTimer = null;
+
+        // Clear glow when damage happens
+        if (playerTile) {
+          playerTile.style.boxShadow = '';
+          playerTile.style.animation = '';
+        }
+      }
+    }, 700);
+  }
+}
+
+
+
+  checkWinCondition();
+  renderMaze();
+  updateVisibility();
+}
+
+
+
+
+
+function hasHiddenNeighbor(index) {
+  const row = Math.floor(index / size);
+  const col = index % size;
+  for (let dr = -1; dr <= 1; dr++) {
+    for (let dc = -1; dc <= 1; dc++) {
+      if (dr === 0 && dc === 0) continue;
+      const nr = row + dr;
+      const nc = col + dc;
+      if (nr >= 0 && nc >= 0 && nr < size && nc < size) {
+        const ni = nr * size + nc;
+        if (!mazeData[ni].visible) return true;
+      }
+    }
+  }
+  return false;
+}
+
+
+
+
+checkWinCondition();
+
+
+
+function checkWinByFlags() {
+  const allCorrect = mazeData.every(cell => {
+    if (cell.trap) return cell.marked;
+    if (!cell.trap) return cell.visible;
+    return true;
+  });
+
+  if (allCorrect) {
+    clearInterval(timerInterval);
+    showNotification("You cleared the maze!", "success");
+    document.getElementById('finalScore').textContent = score;
+    document.getElementById('finalTime').textContent = formatTime(timeElapsed);
+    document.getElementById('scoreboard').style.display = 'block';
+  }
+}
+
+
+
+function takeDamage(customMessage) {
+  lives--;
+  failCount++;
+  livesDisplay.textContent = lives;
+  document.getElementById('failCount').textContent = failCount;
+
+  if (customMessage) {
+    showNotification(customMessage, 'danger');
+  } else {
+    showNotification('You hit a trap!', 'danger');
+  }
+
+  canDodge = false;
+  trapDodgeWindowActive = false;
+  trapTriggeredIndex = null;
+
+  if (lives <= 0) {
+    clearInterval(timerInterval);
+
+    document.getElementById('finalScore').textContent = score;
+    document.getElementById('finalDodges').textContent = dodgeCount;
+    document.getElementById('finalFails').textContent = failCount;
+    document.getElementById('finalTime').textContent = formatTime(timeElapsed);
+
+    const finalTitle = document.getElementById('finalOutcome');
+    finalTitle.textContent = 'MISSION FAILED (Mission Training Started)';
+    finalTitle.classList.remove('text-info', 'text-success');
+    finalTitle.classList.add('text-danger');
+
+    document.getElementById('scoreboard').style.display = 'block';
+  }
+}
+
+
+
+
+function attemptDodge() {
+  if (canDodge && trapDodgeWindowActive) {
+    clearTimeout(currentTrapTimeout);
+    wasDodged = true;
+    canDodge = false;
+    trapDodgeWindowActive = false;
+    trapTriggeredIndex = null;
+    dodgeCount++;
+    document.getElementById('dodgeCount').textContent = dodgeCount;
+    showDodgeMessage();
+    applyCombo();
+    dodgeCooldown = true;
+    setTimeout(() => (dodgeCooldown = false), 1000);
+  } else {
+    takeDamage("You got hit — you just activated a trap!");
+    resetCombo();
+  }
+}
+
+
+
+function spawnTank() {
+  if (tankActive) return;
+  tankActive = true;
+
+  showNotification('The Corporation Has Become Suspicious And Sent A Drone To Check The Area', 'danger');
+
+  let validSpawn = false;
+  while (!validSpawn) {
+    const randomIndex = Math.floor(Math.random() * mazeData.length);
+    const cell = mazeData[randomIndex];
+    if (!cell.trap && !cell.safeZone && !cell.blocker) {
+      tankPosition = randomIndex;
+      validSpawn = true;
+    }
+  }
+
+  moveTank(); // Start the tank movement towards the player
+
+  // Reset the tank timer and interval
+  tankTimer = setTimeout(() => {
+    clearInterval(tankMoveInterval);  // Stop the tank's movement
+    tankActive = false;  // Deactivate the tank
+    tankPosition = null;  // Reset the tank's position
+    renderMaze();  // Re-render the maze
+  }, 20000); // Stop the tank after 20 seconds
+}
+
+function moveTank() {
+  // Clear any existing interval before starting the tank movement
+  if (tankMoveInterval) {
+    clearInterval(tankMoveInterval);
+  }
+
+  // Set the tank movement interval (450ms per move)
+  tankMoveInterval = setInterval(() => {
+    if (!tankActive) return;
+
+    const playerRow = Math.floor(playerPos / size);
+    const playerCol = playerPos % size;
+    const tankRow = Math.floor(tankPosition / size);
+    const tankCol = tankPosition % size;
+
+    let bestMove = tankPosition;
+
+    if (playerRow < tankRow) bestMove -= size; // move up
+    else if (playerRow > tankRow) bestMove += size; // move down
+    else if (playerCol < tankCol) bestMove -= 1; // move left
+    else if (playerCol > tankCol) bestMove += 1; // move right
+
+    // Move the tank to the new position
+    if (bestMove >= 0 && bestMove < mazeData.length) {
+      tankPosition = bestMove;
+    }
+
+    // If the tank reaches the player, damage is applied
+    if (tankPosition === playerPos) {
+      takeDamage('🚓 Tank crushed you! -2 lives');
+      takeDamage(); // apply damage twice, as per your original code
+      clearInterval(tankMoveInterval);  // Stop the tank from moving
+      clearTimeout(tankTimer);  // Stop the timer for the tank
+      tankActive = false;  // Deactivate the tank
+      tankPosition = null;  // Reset the tank's position
+    }
+
+    renderMaze();  // Update the maze with the new tank position
+  }, 450); // Move the tank every 450ms
+}
+function checkWinCondition() {
+  document.getElementById('finalTime').textContent = formatTime(timeElapsed);
+
+  const traps = mazeData.filter(c => c.trap);
+  const markedTraps = mazeData.filter(c => c.trap && c.marked);
+  const incorrectMarks = mazeData.filter(c => !c.trap && c.marked);
+
+  if (traps.length > 0 && markedTraps.length === traps.length && incorrectMarks.length === 0) {
+    clearInterval(timerInterval);
+    document.getElementById('finalScore').textContent = score;
+    document.getElementById('finalDodges').textContent = dodgeCount;
+    document.getElementById('finalFails').textContent = failCount;
+    document.getElementById('scoreboard').style.display = 'block';
+  }
+
+}
+
+if (lives <= 0) {
+    clearInterval(timerInterval);
+
+    finalScore.textContent = score;
+    finalDodges.textContent = dodgeCount;
+    finalFails.textContent = failCount;
+
+    finalTitle.textContent = 'MISSION FAILED (Keep Playing To Train)';
+    finalTitle.classList.remove('text-info', 'text-success');
+    finalTitle.classList.add('text-danger');
+
+    document.getElementById('scoreboard').style.display = 'block';
+  }
+
+
+  document.addEventListener('keydown', (e) => {
+  if (["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].includes(e.key)) {
+    movePlayer(e.key);
+  } else if (e.key === 'q' || e.key === 'Q') {
+    attemptDodge();
+  } else if (e.key === 'r' || e.key === 'R') {
+    restartGame(); // ✅ New restart key
+  }
+});
+
+
+function restartGame() {
+  triggerFlash();
+
+  // Stop any running intervals and timers
+  clearInterval(timerInterval);     // Stop old timer
+  clearInterval(beaconTimer);        // Stop beacon timer
+  clearInterval(powerUpTimer);       // Stop power-up timer if you have it
+  clearInterval(mysteryTimer);       // Stop mystery tile timer if you have it
+  clearInterval(tankTimer);          // Stop tank spawn if you have it
+  clearInterval(tankMoveInterval);   // Clear the tank movement interval (important!)
+
+  // Reset variables
+  score = 0;
+  lives = 3;
+  dodgeCount = 0;
+  failCount = 0;
+  timeElapsed = 0;
+  tankActive = false;
+  mysteryTileActive = false;
+  idleTime = 0;
+
+  // Hide scoreboard
+  document.getElementById('scoreboard').style.display = 'none';
+
+  // Update UI
+  scoreDisplay.textContent = score;
+  livesDisplay.textContent = lives;
+  timerDisplay.textContent = formatTime(timeElapsed);
+  document.getElementById('dodgeCount').textContent = dodgeCount;
+  document.getElementById('failCount').textContent = failCount;
+
+  // Clear and regenerate the maze
+  generateMaze();
+  updateVisibility();
+  renderMaze();
+
+  // Start timers again
+  startTimer();
+  startBeaconTimer();
+  powerUpTimer = setInterval(placePowerUps, 15000); // Adds random power-ups to mazeData
+  mysteryTimer = setInterval(spawnMysteryTile, 25000); // Mystery tiles every 25 seconds
+  tankTimer = setInterval(spawnTank, 45000); // Tank spawns every 45 seconds
+
+  showNotification('🔄 New Mission Initiated!', 'info');
+}
+
+
+function startTimer() {
+  timeElapsed = 0;
+  timerDisplay.textContent = formatTime(timeElapsed);
+  timerInterval = setInterval(() => {
+    timeElapsed++;
+    timerDisplay.textContent = formatTime(timeElapsed);
+  }, 1000);
+}
+
+function formatTime(seconds) {
+  const mins = Math.floor(seconds / 60);
+  const secs = seconds % 60;
+  return `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+}
+
+function toggleMarkTile() {
+  const cell = mazeData[playerPos];
+  if (!cell.visible) return;
+  cell.marked = !cell.marked;
+  renderMaze();
+}
+
+
+
+
+    document.getElementById('startGameBtn').addEventListener('click', () => {
+      document.getElementById('titleScreen').classList.add('d-none');
+      document.getElementById('gameSection').classList.remove('d-none');
+
+      generateMaze();
+      updateVisibility();
+      renderMaze();
+      startTimer();
+      setInterval(placePowerUps, 15000);
+      startBeaconTimer();
+      setInterval(spawnMysteryTile, 25000);
+      setInterval(spawnTank, 45000);
+      renderMaze();
+      checkClearCondition();
+
+    });
+
+function showDodgeMessage() {
+  const msg = document.getElementById('dodgeMessage');
+  msg.classList.remove('d-none');
+  msg.style.opacity = '1';
+
+  setTimeout(() => {
+    msg.classList.add('d-none');
+  }, 2000);
+}
+
+function showNotification(message, type = 'info') {
+  const note = document.getElementById('gameNotification');
+  note.textContent = message;
+  const bgClass = {
+    success: 'bg-success',
+    danger: 'bg-danger',
+    warning: 'bg-warning text-dark',
+    info: 'bg-info text-dark'
+  }[type] || 'bg-secondary';
+  note.className = `position-fixed top-0 start-50 translate-middle-x mt-3 text-white rounded shadow px-4 py-2 fw-bold text-center ${bgClass}`;
+  note.classList.remove('d-none');
+  setTimeout(() => note.classList.add('d-none'), 2000);
+}
+</script>
+</body>
+</html>
