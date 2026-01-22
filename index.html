@@ -816,17 +816,9 @@ h1, h3, h4 {
   <div id="flash" class="flash-overlay"></div>
 
 <script>
-<<<<<<< HEAD
   // ============================================================================
 // MULTIPLAYER WEBSOCKET & LOBBY SYSTEM
 // ============================================================================
-=======
-const maze = document.getElementById('maze');
-const scoreDisplay = document.getElementById('score');
-const livesDisplay = document.getElementById('lives');
-const timerDisplay = document.getElementById('timer');
-const playerId = Math.random().toString(36).substr(2, 9);
->>>>>>> ab95939826c0dacc3961d237008344e1de8b6267
 
 let socket = null;
 let myPlayerId = null;
@@ -1229,7 +1221,6 @@ document.getElementById('nextBtn').addEventListener('click', () => {
     content.innerHTML = 
       `🚩 Use arrow keys to move<br>
       💣 Avoid the red mines<br>
-<<<<<<< HEAD
       💥 Press SPACE to scan tiles<br>
       🚩 Press F to flag suspected mines<br>
       🛸 EVADE corporate drones - they never stop!<br>
@@ -1242,15 +1233,6 @@ document.getElementById('nextBtn').addEventListener('click', () => {
       ⏰ DANGER ESCALATES OVER TIME!<br>
       🔄 Press R to restart<br><br>
       Use Logic And Deduction To Clear The Field<br><br>
-=======
-      💥 Press Q to deactivate the mines<br>
-      ⚠️ Yellow = danger suspicion<br>
-      ⛔ Blockers stop you<br>
-      ❓ Reach the mystery tiles in time<br>
-      💎 Collect power-ups to survive<br>
-      🕒 The board is always changing<br><br>
-      If The Mission Becomes Compromised Press R<br><br>
->>>>>>> ab95939826c0dacc3961d237008344e1de8b6267
     For Security Purposes The Rest Of The Information Has Been Omitted`;
     document.getElementById('nextBtn').textContent = 'Back';
   } else {
@@ -1591,7 +1573,6 @@ function renderGrid() {
         cell.textContent = '💣';
       }
 
-<<<<<<< HEAD
       const hazard = hazardTiles.find(h => h.active && h.row === r && h.col === c);
       if (hazard) {
         if (hazard.type === 'blue') {
@@ -1674,98 +1655,6 @@ function renderGrid() {
       }
       
       maze.appendChild(cell);
-=======
-
-
-function checkWinByFlags() {
-  const allCorrect = mazeData.every(cell => {
-    if (cell.trap) return cell.marked;
-    if (!cell.trap) return cell.visible;
-    return true;
-  });
-
-  if (allCorrect) {
-    clearInterval(timerInterval);
-    showNotification("You cleared the maze!", "success");
-    document.getElementById('finalScore').textContent = score;
-    document.getElementById('finalTime').textContent = formatTime(timeElapsed);
-    document.getElementById('scoreboard').style.display = 'block';
-  }
-}
-
-
-
-function takeDamage(customMessage) {
-  lives--;
-  failCount++;
-  livesDisplay.textContent = lives;
-  document.getElementById('failCount').textContent = failCount;
-
-  if (customMessage) {
-    showNotification(customMessage, 'danger');
-  } else {
-    showNotification('You hit a trap!', 'danger');
-  }
-
-  canDodge = false;
-  trapDodgeWindowActive = false;
-  trapTriggeredIndex = null;
-
-  if (lives <= 0) {
-    clearInterval(timerInterval);
-
-    document.getElementById('finalScore').textContent = score;
-    document.getElementById('finalDodges').textContent = dodgeCount;
-    document.getElementById('finalFails').textContent = failCount;
-    document.getElementById('finalTime').textContent = formatTime(timeElapsed);
-
-    const finalTitle = document.getElementById('finalOutcome');
-    finalTitle.textContent = 'MISSION FAILED (Mission Training Started) Press R To Restart The Mission';
-    finalTitle.classList.remove('text-info', 'text-success');
-    finalTitle.classList.add('text-danger');
-
-    document.getElementById('scoreboard').style.display = 'block';
-  }
-}
-
-
-
-
-function attemptDodge() {
-  if (canDodge && trapDodgeWindowActive) {
-    clearTimeout(currentTrapTimeout);
-    wasDodged = true;
-    canDodge = false;
-    trapDodgeWindowActive = false;
-    trapTriggeredIndex = null;
-    dodgeCount++;
-    document.getElementById('dodgeCount').textContent = dodgeCount;
-    showDodgeMessage();
-    applyCombo();
-    dodgeCooldown = true;
-    setTimeout(() => (dodgeCooldown = false), 1000);
-  } else {
-    takeDamage("You got hit — you just activated a trap!");
-    resetCombo();
-  }
-}
-
-
-
-function spawnTank() {
-  if (tankActive) return;
-  tankActive = true;
-
-  showNotification('The Corporation Has Become Suspicious And Sent A Drone To Check The Area', 'danger');
-
-  let validSpawn = false;
-  while (!validSpawn) {
-    const randomIndex = Math.floor(Math.random() * mazeData.length);
-    const cell = mazeData[randomIndex];
-    if (!cell.trap && !cell.safeZone && !cell.blocker) {
-      tankPosition = randomIndex;
-      validSpawn = true;
->>>>>>> ab95939826c0dacc3961d237008344e1de8b6267
     }
   }
   
