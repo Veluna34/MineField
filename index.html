@@ -3,14 +3,15 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Twist & Turns - Solo Mode</title>
+  <title>Agent Minesweeper - Keyboard Tactical</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <style>
 .bg-gauntlet {
-  background: radial-gradient(circle at center, #170050, #000000);  --bs-bg-opacity: 1;
+  background: radial-gradient(circle at center, #170050, #000000);
+  --bs-bg-opacity: 1;
   color: #00ffcc;
   font-family: 'Courier New', monospace;
-
+  min-height: 100vh;
 }
 
 h1, h3, h4 {
@@ -20,44 +21,21 @@ h1, h3, h4 {
   text-align: center;
 }
 
-    #maze .cell {
-      width: 27px;
-      height: 27px;
-      display: inline-block;
-      border: 1px solid #444;
-      transition: transform 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
-    }
-#mazeWrapper {
-  min-height: 80vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-#maze {
-  width: fit-content;
-  margin: 0 auto;
-  display: grid;
-  justify-content: center;
+.mission-title {
+  color: #00ffcc;
+  font-family: 'Courier New', monospace;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  text-shadow: 0 0 10px #00ffee;
+  margin-bottom: 4rem;
+  margin-top: 3rem;
 }
 
-@keyframes safePulse {
-  0% { box-shadow: 0 0 8px 3px #00ccff; }
-  50% { box-shadow: 0 0 15px 6px #00ffff; }
-  100% { box-shadow: 0 0 8px 3px #00ccff; }
+.welcome {
+  text-shadow: 0 0 10px #00ffee;
 }
 
-
-    .mission-title {
-      color: #00ffcc;
-      font-family: 'Courier New', monospace;
-      font-weight: bold;
-      text-transform: uppercase;
-      letter-spacing: 2px;
-      text-shadow: 0 0 10px #00ffee;
-      margin-bottom: 4rem;
-      margin-top: 3rem;
-      text-shadow: 0 0 10px #000000;
-    }
 .btn-info {
   background-color: #003344;
   border-color: #007777;
@@ -72,26 +50,15 @@ h1, h3, h4 {
   color: #fff;
 }
 
-.btn-success,
-.btn-primary {
-  text-transform: uppercase;
-  font-weight: bold;
-  letter-spacing: 1px;
-  font-family: 'Courier New', monospace;
-}
-
-
 .btn-success {
   background-color: #003f3f;
   border-color: #00ffaa;
   color: #00ffaa;
   margin-top: .5em;
-}
-
-.btn-primary {
-  background-color: #00294d;
-  border-color: #00bfff;
-  color: #00bfff;
+  text-transform: uppercase;
+  font-weight: bold;
+  letter-spacing: 1px;
+  font-family: 'Courier New', monospace;
 }
 
 .btn-success:hover {
@@ -99,59 +66,18 @@ h1, h3, h4 {
   color: white;
 }
 
-.trap { background-color: red !important; }
-    .player { background-color: lime !important; }
-    .visible { opacity: 1; }
-    .other-player { background-color: cyan !important; }
-    .suspicious { background-color: orange !important; }
-    .marked { background-color: yellow !important; }
-    .dodge-message {
-      position: fixed;
-      top: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      background-color: rgba(0, 255, 0, 0.85);
-      padding: 10px 20px;
-      border-radius: 8px;
-      font-weight: bold;
-      font-size: 1.2rem;
-      z-index: 1000;
-      animation: fadeOut 2s ease-in-out forwards;
-    }
-    @keyframes fadeOut {
-      0% { opacity: 1; }
-      80% { opacity: 1; }
-      100% { opacity: 0; }
-    }
-    @keyframes dangerPulse {
-  0% { box-shadow: 0 0 5px 2px red; }
-  50% { box-shadow: 0 0 25px 10px red; }
-  100% { box-shadow: 0 0 5px 2px red; }
-}
-
-.cell.hidden {
-  background-color: #111 !important;
-}
-
-
-
-.dodge-message {
-  position: fixed;
-  top: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  background-color: rgba(0, 255, 0, 0.9);
-  padding: 10px 20px;
-  border-radius: 8px;
-  font-weight: bold;
-  font-size: 1.2rem;
-  z-index: 1000;
-  animation: fadeOut 2s ease-in-out forwards;
+.noir {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 200px;
+  height: auto;
+  border-radius: 15px;
 }
 
 #storyOverlay {
   background-color: rgba(0, 0, 0, 0.75);
-  backdrop-filter: blur(2px); /* optional blur effect */
+  backdrop-filter: blur(2px);
 }
 
 #storyModal {
@@ -163,38 +89,324 @@ h1, h3, h4 {
   text-align: center;
 }
 
-
-
-
-@keyframes fadeOut {
-  0% { opacity: 1; }
-  80% { opacity: 1; }
-  100% { opacity: 0; }
+.difficulty-selector {
+  margin-top: 3rem;
 }
 
-@keyframes flashReveal {
-  0%   { background-color: #00ffcc; transform: scale(1.1); }
-  100% { background-color: transparent; transform: scale(1); }
+.difficulty-btn {
+  background: linear-gradient(145deg, #003344, #001122);
+  border: 2px solid #00ffcc;
+  color: #00ffcc;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  padding: 15px 25px;
+  margin: 0.5rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 15px rgba(0, 255, 204, 0.3);
+  min-width: 180px;
+}
+
+.difficulty-btn:hover {
+  background: linear-gradient(145deg, #004455, #002233);
+  border-color: #00ffee;
+  color: #00ffee;
+  box-shadow: 0 0 25px rgba(0, 255, 204, 0.5);
+  transform: translateY(-2px);
+}
+
+#maze {
+  display: inline-grid;
+  gap: 1px;
+  background: #0a0a0a;
+  border: 3px solid #00ffcc;
+  box-shadow: 0 0 30px rgba(0, 255, 204, 0.3);
+  padding: 2px;
+}
+
+.cell {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px outset #555;
+  background: linear-gradient(145deg, #2a2a2a, #1a1a1a);
+  font-weight: bold;
+  font-size: 1rem;
+  user-select: none;
+  transition: all 0.15s ease;
+  position: relative;
+}
+
+.cell.revealed {
+  background: linear-gradient(145deg, #1a1a1a, #0a0a0a);
+  border: 1px solid #333;
+  border-style: inset;
+}
+
+.cell.player {
+  box-shadow: 0 0 15px rgba(0, 255, 204, 1);
+  border-color: #00ffcc;
+  animation: playerPulse 1s infinite;
+}
+
+@keyframes playerPulse {
+  0%, 100% { box-shadow: 0 0 10px rgba(0, 255, 204, 0.8); }
+  50% { box-shadow: 0 0 20px rgba(0, 255, 204, 1); }
+}
+
+.cell.mine-hit {
+  background: radial-gradient(circle, #ff0000, #990000) !important;
+  animation: mineExplode 0.5s ease;
+}
+
+@keyframes mineExplode {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.4); box-shadow: 0 0 40px red; }
+  100% { transform: scale(1); }
+}
+
+.cell.flagged::before {
+  content: '🚩';
+  position: absolute;
+  font-size: 1.1rem;
+  z-index: 2;
+}
+
+.cell.player-flagged::after {
+  content: '🕵️';
+  position: absolute;
+  font-size: 1.3rem;
+  z-index: 3;
+  filter: drop-shadow(0 0 3px #00ffcc);
+}
+
+/* Number colors - classic minesweeper */
+.num-1 { color: #00ffff; text-shadow: 0 0 5px #00ffff; }
+.num-2 { color: #00ff00; text-shadow: 0 0 5px #00ff00; }
+.num-3 { color: #ffff00; text-shadow: 0 0 5px #ffff00; }
+.num-4 { color: #ff9900; text-shadow: 0 0 5px #ff9900; }
+.num-5 { color: #ff6600; text-shadow: 0 0 5px #ff6600; }
+.num-6 { color: #ff3300; text-shadow: 0 0 5px #ff3300; }
+.num-7 { color: #ff0000; text-shadow: 0 0 5px #ff0000; }
+.num-8 { color: #ff00ff; text-shadow: 0 0 5px #ff00ff; }
+
+.mine-icon {
+  font-size: 1.2rem;
+}
+
+.stats-panel {
+  background: rgba(0, 20, 40, 0.9);
+  border: 2px solid #00ffcc;
+  border-radius: 10px;
+  padding: 1.5rem;
+  box-shadow: 0 0 20px rgba(0, 255, 204, 0.2);
+}
+
+.stat-item {
+  display: flex;
+  justify-content: space-between;
+  margin: 0.5rem 0;
+  font-size: 1.1rem;
+  color: #00ffcc;
+}
+
+.stat-value {
+  font-weight: bold;
+  color: #00ff88;
+}
+
+.btn-tactical {
+  background: linear-gradient(145deg, #003344, #001122);
+  border: 2px solid #00ffcc;
+  color: #00ffcc;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  padding: 12px 30px;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 15px rgba(0, 255, 204, 0.3);
+}
+
+.btn-tactical:hover {
+  background: linear-gradient(145deg, #004455, #002233);
+  border-color: #00ffee;
+  color: #00ffee;
+  box-shadow: 0 0 25px rgba(0, 255, 204, 0.5);
+  transform: translateY(-2px);
+}
+
+.game-over-panel {
+  background: rgba(0, 0, 0, 0.95);
+  border: 3px solid #ff0000;
+  border-radius: 15px;
+  padding: 2rem;
+  box-shadow: 0 0 40px rgba(255, 0, 0, 0.5);
+}
+
+.game-win-panel {
+  background: rgba(0, 0, 0, 0.95);
+  border: 3px solid #00ff00;
+  border-radius: 15px;
+  padding: 2rem;
+  box-shadow: 0 0 40px rgba(0, 255, 0, 0.5);
+}
+
+.cascade-reveal {
+  animation: cascadeFlash 0.2s ease;
+}
+
+@keyframes cascadeFlash {
+  0% { background: #00ffcc; transform: scale(1.1); }
+  100% { background: transparent; transform: scale(1); }
+}
+
+#timer {
+  font-family: 'Courier New', monospace;
+  font-size: 1.5rem;
+  color: #00ffcc;
+  text-shadow: 0 0 10px #00ffcc;
+}
+
+.controls-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.5rem;
+  margin-top: 1rem;
+  font-size: 0.85rem;
+}
+
+.control-item {
+  background: rgba(0, 50, 70, 0.5);
+  padding: 0.5rem;
+  border-radius: 5px;
+  border: 1px solid #004466;
+}
+
+.kbd {
+  background: #001122;
+  padding: 2px 6px;
+  border-radius: 3px;
+  border: 1px solid #00ffcc;
+  font-weight: bold;
+  color: #00ffcc;
 }
 
 @keyframes screenShake {
-  0% { transform: translate(0, 0); }
-  25% { transform: translate(-10px, 0); }
-  50% { transform: translate(10px, 0); }
-  75% { transform: translate(-10px, 0); }
-  100% { transform: translate(0, 0); }
+  0%, 100% { transform: translate(0, 0); }
+  25% { transform: translate(-5px, 0); }
+  75% { transform: translate(5px, 0); }
 }
+
 .shake {
   animation: screenShake 0.3s ease;
 }
 
-.noir{
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  width: 200px;
-  height: auto;
-  border-radius: 15px;
+/* Drone styles */
+.cell.drone {
+  background: #222 !important;
+  border: 2px solid cyan !important;
+  box-shadow: 0 0 15px cyan !important;
+  animation: dronePulse 0.8s infinite;
+}
+
+@keyframes dronePulse {
+  0%, 100% { box-shadow: 0 0 10px cyan; }
+  50% { box-shadow: 0 0 20px cyan, 0 0 30px rgba(0, 255, 255, 0.5); }
+}
+
+/* Anomaly (mystery tile) styles */
+.cell.anomaly {
+  background: radial-gradient(circle, #9900ff, #4400aa) !important;
+  border: 2px solid #ff00ff !important;
+  animation: anomalyPulse 1.2s infinite;
+}
+
+@keyframes anomalyPulse {
+  0%, 100% { 
+    box-shadow: 0 0 10px #ff00ff;
+    transform: scale(1);
+  }
+  50% { 
+    box-shadow: 0 0 25px #ff00ff, 0 0 40px rgba(255, 0, 255, 0.6);
+    transform: scale(1.05);
+  }
+}
+
+/* Proximity Mine styles */
+.cell.proximity-mine {
+  background: radial-gradient(circle, #ff3300, #990000) !important;
+  border: 2px solid #ff6600 !important;
+  animation: proximityPulse 0.6s infinite;
+}
+
+@keyframes proximityPulse {
+  0%, 100% { 
+    box-shadow: 0 0 15px #ff3300;
+    transform: scale(1);
+  }
+  50% { 
+    box-shadow: 0 0 30px #ff3300, 0 0 50px rgba(255, 51, 0, 0.8);
+    transform: scale(1.1);
+  }
+}
+
+.notification {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.9);
+  border: 2px solid #00ffcc;
+  padding: 15px 30px;
+  border-radius: 10px;
+  font-weight: bold;
+  font-size: 1.1rem;
+  z-index: 10000;
+  box-shadow: 0 0 20px rgba(0, 255, 204, 0.5);
+  animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+  from { top: -100px; opacity: 0; }
+  to { top: 20px; opacity: 1; }
+}
+
+.notification.danger {
+  border-color: #ff0000;
+  color: #ff0000;
+  box-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
+}
+
+.notification.success {
+  border-color: #00ff00;
+  color: #00ff00;
+  box-shadow: 0 0 20px rgba(0, 255, 0, 0.5);
+}
+
+.notification.warning {
+  border-color: #ffff00;
+  color: #ffff00;
+  box-shadow: 0 0 20px rgba(255, 255, 0, 0.5);
+}
+
+.notification.info {
+  border-color: #ff00ff;
+  color: #ff00ff;
+  box-shadow: 0 0 20px rgba(255, 0, 255, 0.5);
+}
+
+/* Anomaly transformation effect */
+.cell.anomaly-transform {
+  animation: transformFlash 0.8s ease;
+}
+
+@keyframes transformFlash {
+  0%, 100% { background: #9900ff; transform: scale(1) rotate(0deg); }
+  25% { background: #ff00ff; transform: scale(1.3) rotate(90deg); }
+  50% { background: #00ffff; transform: scale(1.5) rotate(180deg); }
+  75% { background: #ff00ff; transform: scale(1.3) rotate(270deg); }
 }
 
 .badge {
@@ -204,22 +416,94 @@ h1, h3, h4 {
   border-radius: 12px;
 }
 
-
-@keyframes beaconPulse {
-  0%   { box-shadow: 0 0 5px 2px yellow; transform: scale(1); }
-  50%  { box-shadow: 0 0 15px 6px orange; transform: scale(1.1); }
-  100% { box-shadow: 0 0 5px 2px yellow; transform: scale(1); }
+.anomaly-countdown {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  background: rgba(0, 0, 0, 0.8);
+  color: #ff00ff;
+  font-size: 0.7rem;
+  padding: 1px 3px;
+  border-radius: 3px;
+  font-weight: bold;
+  z-index: 5;
 }
 
-.beacon {
-  animation: beaconPulse 1s infinite;
-  z-index: 2;
+.proximity-countdown {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  background: rgba(0, 0, 0, 0.8);
+  color: #ff3300;
+  font-size: 0.7rem;
+  padding: 1px 3px;
+  border-radius: 3px;
+  font-weight: bold;
+  z-index: 5;
 }
 
+/* Static Interference */
+.cell.interference {
+  animation: staticFlicker 0.3s infinite;
+}
 
+@keyframes staticFlicker {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; background: #333; }
+}
 
-.mb-4{
-    margin-bottom: 5rem !important;
+/* EMP Blackout */
+.emp-blackout .cell.revealed {
+  background: #000 !important;
+  color: transparent !important;
+  border-color: #111 !important;
+}
+
+.emp-blackout .cell.revealed::before,
+.emp-blackout .cell.revealed::after {
+  display: none !important;
+}
+
+/* Threat Level Bar */
+.threat-bar {
+  width: 100%;
+  height: 20px;
+  background: #001122;
+  border: 2px solid #00ffcc;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-top: 1rem;
+  position: relative;
+}
+
+.threat-fill {
+  height: 100%;
+  transition: width 0.5s ease, background-color 0.5s ease;
+  border-radius: 8px;
+}
+
+.threat-level-0 { background: linear-gradient(90deg, #00ff00, #00cc00); width: 0%; }
+.threat-level-1 { background: linear-gradient(90deg, #00ff00, #00cc00); width: 20%; }
+.threat-level-2 { background: linear-gradient(90deg, #ffff00, #cccc00); width: 40%; }
+.threat-level-3 { background: linear-gradient(90deg, #ff9900, #cc7700); width: 60%; }
+.threat-level-4 { background: linear-gradient(90deg, #ff3300, #cc0000); width: 80%; }
+.threat-level-5 { background: linear-gradient(90deg, #ff0000, #990000); width: 100%; animation: threatPulse 0.5s infinite; }
+
+@keyframes threatPulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+.threat-label {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 0.7rem;
+  font-weight: bold;
+  color: #fff;
+  text-shadow: 0 0 3px #000;
+  pointer-events: none;
 }
 
 .flash-overlay {
@@ -228,38 +512,182 @@ h1, h3, h4 {
   left: 0;
   width: 100%;
   height: 100%;
-  background: white;
+  background: #000000;
   opacity: 0;
   z-index: 9999;
   pointer-events: none;
-  transition: opacity 0.0s ease;
-  background: #000000; /* neon blue flash */
-
+  transition: opacity 0.1s ease;
 }
 
-.welcome{
-      text-shadow: 0 0 10px #00ffee;
+.cell.emp-powerup {
+  background: radial-gradient(circle, #ffff00, #ffaa00) !important;
+  border: 2px solid #ffff00 !important;
+  animation: empPulse 0.8s infinite;
+  box-shadow: 0 0 20px #ffff00 !important;
+}
+
+@keyframes empPulse {
+  0%, 100% { 
+    box-shadow: 0 0 15px #ffff00;
+    transform: scale(1);
+  }
+  50% { 
+    box-shadow: 0 0 30px #ffff00, 0 0 50px rgba(255, 255, 0, 0.6);
+    transform: scale(1.1);
+  }
+}
+
+.cell.emp-trap-bomb {
+  background: radial-gradient(circle, #ff0000, #8b0000) !important;
+  border: 2px solid #ff0000 !important;
+  animation: trapBombPulse 0.6s infinite;
+}
+
+@keyframes trapBombPulse {
+  0%, 100% { 
+    box-shadow: 0 0 10px #ff0000;
+  }
+  50% { 
+    box-shadow: 0 0 20px #ff0000, 0 0 30px rgba(255, 0, 0, 0.5);
+  }
+}
+
+/* Chaos mode screen effects */
+.chaos-mode-active {
+  animation: chaosShake 0.5s infinite;
+}
+
+.cell.blue-hazard {
+  background: radial-gradient(circle, #0099ff, #0055aa) !important;
+  border: 2px solid #00ccff !important;
+  animation: blueHazardPulse 0.8s infinite;
+}
+
+@keyframes blueHazardPulse {
+  0%, 100% { 
+    box-shadow: 0 0 15px #0099ff;
+    transform: scale(1);
+  }
+  50% { 
+    box-shadow: 0 0 30px #0099ff, 0 0 50px rgba(0, 153, 255, 0.6);
+    transform: scale(1.05);
+  }
+}
+
+.cell.green-hazard {
+  background: radial-gradient(circle, #00ff66, #00aa44) !important;
+  border: 2px solid #00ff88 !important;
+  animation: greenHazardPulse 0.8s infinite;
+}
+
+@keyframes greenHazardPulse {
+  0%, 100% { 
+    box-shadow: 0 0 15px #00ff66;
+    transform: scale(1);
+  }
+  50% { 
+    box-shadow: 0 0 30px #00ff66, 0 0 50px rgba(0, 255, 102, 0.6);
+    transform: scale(1.05);
+  }
+}
+
+@keyframes chaosShake {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  25% { transform: translate(-3px, 3px) rotate(-0.5deg); }
+  75% { transform: translate(3px, -3px) rotate(0.5deg); }
 }
   </style>
 </head>
 <body class="bg-gauntlet text-white">
-  <div class="container-fluid py-4" id="titleScreen">
-    <h1 class="welcome"> You Have Reached: The MineField </h1>
+
+  <!-- Lobby Screen -->
+  <div class="container-fluid py-4" id="lobbyScreen">
+    <button class="btn btn-tactical w-100 mt-2" id="singlePlayerBtn" style="max-width: 300px; margin: 0 auto 2rem auto; display: block;">
+      🎮 SINGLE PLAYER MODE
+    </button>
+
+    <h1 class="mission-title">MULTIPLAYER COMMAND CENTER</h1>
+    
+    <div class="row justify-content-center" id="lobbyMenu">
+      <div class="col-md-6">
+        <div class="stats-panel">
+          <h4 class="text-center mb-4" style="color: #00ffcc;">AGENT IDENTIFICATION</h4>
+          <input type="text" id="playerName" class="form-control mb-3" 
+                 style="background: #001122; border: 2px solid #00ffcc; color: #00ffcc;"
+                 placeholder="Enter Agent Name" maxlength="15">
+          
+          <button class="btn btn-tactical w-100 mb-2" id="createLobbyBtn">
+            🎮 CREATE NEW LOBBY
+          </button>
+          
+          <hr style="border-color: #00ffcc;">
+          
+          <h5 class="text-center" style="color: #00ffcc;">OR JOIN EXISTING</h5>
+          <input type="text" id="lobbyCodeInput" class="form-control mb-3" 
+                 style="background: #001122; border: 2px solid #00ffcc; color: #00ffcc; text-transform: uppercase;"
+                 placeholder="Enter 6-Digit Lobby Code" maxlength="6">
+          <button class="btn btn-tactical w-100" id="joinLobbyBtn">
+            🚪 JOIN LOBBY
+          </button>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Lobby Waiting Room -->
+    <div class="row justify-content-center d-none" id="lobbyWaiting">
+      <div class="col-md-6">
+        <div class="stats-panel">
+          <h4 class="text-center" style="color: #00ffcc;">LOBBY: <span id="currentLobbyCode" style="color: #00ff88;"></span></h4>
+          <p class="text-center" style="color: #00ff88;">
+            Share this code with agents to join!
+          </p>
+          
+          <h5 class="text-center mt-4" style="color: #00ffcc;">AGENTS IN LOBBY:</h5>
+          <ul id="lobbyPlayerList" class="list-unstyled text-center">
+          </ul>
+          
+          <button class="btn btn-success w-100 mt-3 d-none" id="startGameBtn">
+            ▶️ START MISSION
+          </button>
+          <button class="btn btn-tactical w-100 mt-2" id="leaveLobbyBtn">
+            ❌ LEAVE LOBBY
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Title Screen -->
+  <div class="container-fluid py-4 d-none" id="titleScreen">
+    <h1 class="welcome">You Have Reached: The MineField</h1>
     <h1 class="mission-title">YOUR MISSION: ENTER THE GAUNTLET</h1>
     <h3 id="mission">Objective: Clear The Field, Discover The Mines</h3>
-    <div class="text-center">
-      <button id="startGameBtn" class="btn btn-success">Initiate Operation</button>
-      <br />
+    
+    <div class="text-center difficulty-selector">
+      <h4 class="mb-3" style="color: #00ffcc;">SELECT DIFFICULTY</h4>
+      <button class="difficulty-btn" data-difficulty="beginner">
+        BEGINNER<br><small style="font-size: 0.75rem;">10x10 Grid | 12 Mines</small>
+      </button>
+      <button class="difficulty-btn" data-difficulty="intermediate">
+        INTERMEDIATE<br><small style="font-size: 0.75rem;">16x16 Grid | 40 Mines</small>
+      </button>
+      <button class="difficulty-btn" data-difficulty="expert">
+        EXPERT<br><small style="font-size: 0.75rem;">22x22 Grid | 99 Mines</small>
+      </button>
+    </div>
+
+    <div class="text-center mt-4">
       <button id="openStoryBtn" class="btn btn-info mt-3">For Agent 5 Only 📖</button>
     </div>
   </div>
 
   <!-- Story Overlay -->
   <div id="storyOverlay" class="position-fixed top-0 start-0 w-100 h-100 bg-black" style="opacity: 0.6; display: none; z-index: 1000;"></div>
+  
   <!-- Story Modal -->
   <div id="storyModal" class="position-fixed top-50 start-50 translate-middle bg-dark text-white border rounded p-4 shadow-lg" style="display:none; z-index: 1001; width: 400px; max-width: 90%;">
     <h4 id="storyTitle">Welcome Agent 5 (AKA The Minesweeper)</h4>
-    <img class="noir" src="/Noir.png" alt="Agent Image" style="display:block; margin:0 auto; width:200px; border-radius:15px;">
+    <img class="noir" src="./static/Noir.png" alt="Agent Image" style="display:block; margin:0 auto; width:200px; border-radius:15px;">
     <p id="storyContent" style="min-height: 120px;"></p>
     <div class="text-end">
       <button id="nextBtn" class="btn btn-warning">Next</button>
@@ -267,143 +695,482 @@ h1, h3, h4 {
     </div>
   </div>
 
-  <!-- === Game Section === -->
-  <div id="gameSection" class="d-none d-flex align-items-center justify-content-center" style="min-height: 100vh;">
-    <div class="d-flex align-items-center justify-content-center" style="gap: 80px;">
-      <div id="scoreboard" class="text-center" style="display:none; min-width: 250px;">
-        <h4 id="finalOutcome" class="text-info">Final Outcome</h4>
-        <table class="table table-dark table-bordered w-auto mx-auto">
-          <thead>
-            <tr>
-              <th>Score</th>
-              <th>Dodges</th>
-              <th>Fails</th>
-              <th>Time</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td id="finalScore"></td>
-              <td id="finalDodges"></td>
-              <td id="finalFails"></td>
-              <td id="finalTime"></td>
-            </tr>
-          </tbody>
-        </table>
+  <!-- Game Screen -->
+  <div class="container-fluid py-4 d-none" id="gameScreen">
+    <div class="row justify-content-center">
+      
+      <!-- Stats Panel -->
+      <div class="col-auto">
+        <div class="stats-panel" style="width: 240px;">
+          <h5 class="text-center mb-3" style="color: #00ffcc;">📊 MISSION STATUS</h5>
+          
+          <div class="stat-item">
+            <span>💣 Total Mines:</span>
+            <span class="stat-value" id="mineCount">0</span>
+          </div>
+          
+          <div class="stat-item">
+            <span>🚩 Flags Placed:</span>
+            <span class="stat-value" id="flagCount">0</span>
+          </div>
+          
+          <div class="stat-item">
+            <span>⏱️ Time:</span>
+            <span class="stat-value" id="timer">000</span>
+          </div>
+          
+          <div class="stat-item">
+            <span>📍 Tiles Left:</span>
+            <span class="stat-value" id="tilesLeft">0</span>
+          </div>
+
+          <div class="stat-item">
+            <span>🎯 Streak:</span>
+            <span class="stat-value" id="streakCount">0</span>
+          </div>
+
+          <div class="stat-item">
+            <span>⚡ EMP Charges:</span>
+            <span class="stat-value" id="empCharges">1</span>
+          </div>
+
+          <div class="threat-bar">
+            <div class="threat-fill threat-level-0" id="threatFill"></div>
+            <div class="threat-label" id="threatLabel">SAFE</div>
+          </div>
+
+          <hr style="border-color: #00ffcc;">
+          
+          <button class="btn btn-tactical w-100 mb-2" id="newGameBtn">
+            🏠 NEW MISSION
+          </button>
+
+          <div class="controls-grid">
+            <div class="control-item">
+              <span class="kbd">SPACE</span> Scan
+            </div>
+            <div class="control-item">
+              <span class="kbd">F</span> Flag
+            </div>
+            <div class="control-item">
+              <span class="kbd">↑↓←→</span> Move
+            </div>
+            <div class="control-item">
+              <span class="kbd">R</span> Restart
+            </div>
+            <div class="control-item">
+              <span class="kbd">E</span> Use EMP
+            </div>
+          </div>
+        </div>
       </div>
-      <div id="mazeWrapper" class="d-flex align-items-center justify-content-center">
-        <div id="maze" class="d-grid gap-0"></div>
+
+      <!-- Game Board -->
+      <div class="col-auto">
+        <div class="d-flex justify-content-center align-items-center" style="min-height: 70vh;">
+          <div id="maze"></div>
+        </div>
       </div>
-      <div id="liveStats" class="d-flex flex-column align-items-center text-center">
-        <span class="badge bg-success mb-2">Score: <span id="score">0</span></span>
-        <span class="badge bg-danger mb-2">Lives: <span id="lives">3</span></span>
-        <span class="badge bg-warning text-dark mb-2">Time: <span id="timer">60</span>s</span>
-        <span class="badge bg-primary mb-2">Dodges: <span id="dodgeCount">0</span></span>
-        <span class="badge bg-secondary mb-2">Fails: <span id="failCount">0</span></span>
+
+    </div>
+  </div>
+
+  <!-- Game Over Modal -->
+  <div class="modal fade" id="gameOverModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content game-over-panel">
+        <div class="modal-body text-center">
+          <h2 style="color: #ff0000;">💥 MISSION FAILED 💥</h2>
+          <p class="mt-3" style="font-size: 1.2rem;">You triggered a mine!</p>
+          <p style="color: #888;">Survival Time: <span id="failTime">0</span>s</p>
+          <p style="color: #888;">Streak: <span id="failStreak">0</span></p>
+          <button class="btn btn-tactical mt-3" data-bs-dismiss="modal" id="retryBtn">
+            🔄 TRY AGAIN
+          </button>
+        </div>
       </div>
     </div>
   </div>
-  <div id="dodgeMessage" class="d-none dodge-message">You dodged the trap!</div>
-  <div id="gameNotification" class="position-fixed top-0 start-50 translate-middle-x mt-3 d-none text-white rounded shadow px-4 py-2 fw-bold text-center" style="z-index:9999; min-width: 250px; font-size: 1.1rem;"></div>
+
+  <!-- Game Win Modal -->
+  <div class="modal fade" id="gameWinModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content game-win-panel">
+        <div class="modal-body text-center">
+          <h2 style="color: #00ff00;">✅ MISSION COMPLETE ✅</h2>
+          <p class="mt-3" style="font-size: 1.2rem;">All mines successfully located!</p>
+          <p style="color: #00ffcc; font-size: 1.8rem; font-weight: bold;">
+            ⏱️ <span id="winTime">0</span>s
+          </p>
+          <p style="color: #ffff00; font-size: 1.3rem;">
+            🎯 Final Streak: <span id="winStreak">0</span>
+          </p>
+          <button class="btn btn-tactical mt-3" data-bs-dismiss="modal" id="playAgainBtn">
+            🎮 PLAY AGAIN
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div id="flash" class="flash-overlay"></div>
-</body>
-</html>
 
 <script>
-const socket = new WebSocket('ws://' + window.location.host);
-const maze = document.getElementById('maze');
-const scoreDisplay = document.getElementById('score');
-const livesDisplay = document.getElementById('lives');
-const timerDisplay = document.getElementById('timer');
-const playerId = Math.random().toString(36).substr(2, 9);
+  // ============================================================================
+// MULTIPLAYER WEBSOCKET & LOBBY SYSTEM
+// ============================================================================
 
+let socket = null;
+let myPlayerId = null;
+let currentLobbyCode = null;
+let isHost = false;
 let otherPlayers = {};
-const size = 30;
-let score = 0;
-let lives = 3;
+let isMultiplayer = false;
+
+// Game state tracking
+let currentScreen = 'lobby'; // Can be: 'lobby', 'title', 'game'
+
+// ============================================================================
+// GAME STATE VARIABLES
+// ============================================================================
+
+let grid = [];
+let rows = 0;
+let cols = 0;
+let mineCount = 0;
+let flagCount = 0;
+let revealedCount = 0;
+let gameOver = false;
+let gameWon = false;
+let timerInterval = null;
 let timeElapsed = 0;
-let dodgeCount = 0;
-let failCount = 0;
-let timerInterval;
-let currentTrapTimeout = null;
-let canDodge = false;
-let dodgeCooldown = false;
-let suspiciousTimer = null;
-let lastTileIndex = null;
-let suspiciousAccumulated = 0;
-let suspiciousInterval = null;
-let totalCells = size * size; // ✅ Define this first
-let TRAP_DAMAGE_DELAY = 500; // Time in ms before damage if not dodged
-let wasDodged = false;
-let SUSPICION_REVEAL_CHANCE = 0.7;
-let comboMultiplier = 1;
-let comboCount = 0;
-let nextBeaconTime = 37; // seconds
-let beaconIndex = null;
-let hasSafeStep = false;
-let dodgeDelay = TRAP_DAMAGE_DELAY; // can be slowed by power-up
-let beaconTimer = null;
-let POWER_UP_TYPES = ['safeStep', 'slowTime', 'speedBoost'];
-let speedBoostActive = false;
-let movementLocked = false;
+let firstClick = true;
+let playerRow = 0;
+let playerCol = 0;
 let isTyping = false;
 let typingInterval = null;
-let tankActive = false;
-let tankPosition = null;
-let tankTimer = null;
-let tankMoveInterval = null;
-let powerUpTimer = null;
-let mysteryTimer = null;
-let minesHit = 0; // Track how many mines the player has hit
-const SECRET_AGENT_TILE_COUNT = 3; // Number of secret agent tiles to spawn when two mines are hit
-const BULLET_DAMAGE = 1; // Each bullet deals 1 damage
-let secretAgentTiles = []; // Store secret agent tiles
-let bulletTimer = null; // Timer for bullet shooting
-let secretAgentActive = false; // Flag to track if secret agents are active
+
+let moveCooldown = false;
+const MOVE_DELAY = 115;
+
+let droneRow = -1;
+let droneCol = -1;
+let droneActive = false;
+let droneInterval = null;
+let droneSpawnTimer = null;
+
+let empCharges = 1;
+let empPowerupActive = false;
+let empPowerupRow = -1;
+let empPowerupCol = -1;
+let empPowerupSpawnTimer = null;
+let empTrapBombs = [];
+let empPowerupTimeout = null;
+
+let drone2Row = -1;
+let drone2Col = -1;
+let drone2Active = false;
+let drone2Interval = null;
+let drone2SpawnTimer = null;
+
+let anomalyRow = -1;
+let anomalyCol = -1;
+let anomalyActive = false;
+let anomalySpawnTimer = null;
+let anomalySpawnInterval = 25000;
+let anomalyCountdown = 0;
+let anomalyCountdownInterval = null;
+
+let proximityMines = [];
+let proximitySpawnTimer = null;
+
+let staticInterferenceActive = false;
+let staticInterferenceTimer = null;
+let interferenceCells = [];
+
+let empBlackoutActive = false;
+let empBlackoutTimer = null;
+
+let hazardTiles = [];
+let hazardSpawnTimer = null;
+let playerSlowed = false;
+let playerFrozen = false;
+
+let streak = 0;
+let threatLevel = 0;
+
+const difficulties = {
+  beginner: { rows: 10, cols: 10, mines: 12 },
+  intermediate: { rows: 16, cols: 16, mines: 40 },
+  expert: { rows: 22, cols: 22, mines: 99 }
+};
 
 
 
-
-
-
-mazeData = Array.from({ length: totalCells }, () => ({
-  trap: false,
-  visible: false,
-  triggered: false,
-  suspicious: false,
-  suspicionLevel: 0,
-  marked: false,
-  pingVisible: false,
-  revealedAsClue: false,
-  safeZone: false,
-  neutral: false,
-  showSuspicion: false,
-  powerUp: null, // ✅ must exist here
-  blocker: false,
-  mystery: false,
-
-}));
-
-function triggerFlash() {
-  const flash = document.getElementById('flash');
-  flash.style.opacity = '1';   // Make it full white
-  setTimeout(() => {
-    flash.style.opacity = '0'; // Fade back to normal
-  }, 200); // Flash for 0.2 seconds
+function connectToServer() {
+  console.log('Attempting to connect to WebSocket server...');
+  socket = new WebSocket('ws://localhost:8080');
+  
+  socket.onopen = () => {
+    console.log('✅ Connected to server!');
+  };
+  
+  socket.onmessage = (event) => {
+    console.log('Message from server:', event.data);
+    const data = JSON.parse(event.data);
+    handleServerMessage(data);
+  };
+  
+  socket.onerror = (error) => {
+    console.error('❌ WebSocket error:', error);
+    showNotification('Failed to connect to server!', 'danger');
+  };
+  
+  socket.onclose = () => {
+    console.log('Disconnected from server');
+  };
 }
 
+function handleServerMessage(data) {
+  console.log('Handling message:', data.type);
+  
+  switch(data.type) {
+    case 'LOBBY_CREATED':
+      currentLobbyCode = data.lobbyCode;
+      isHost = data.isHost;
+      myPlayerId = data.playerId;
+      
+      document.getElementById('lobbyMenu').classList.add('d-none');
+      document.getElementById('lobbyWaiting').classList.remove('d-none');
+      document.getElementById('currentLobbyCode').textContent = data.lobbyCode;
+      
+      if (isHost) {
+        document.getElementById('startGameBtn').classList.remove('d-none');
+      }
+      
+      updateLobbyPlayerList(data.players);
+      showNotification(`Lobby ${data.lobbyCode} created!`, 'success');
+      break;
+      
+    case 'JOINED_LOBBY':
+      myPlayerId = data.playerId;
+      break;
+      
+    case 'PLAYER_JOINED':
+      updateLobbyPlayerList(data.players);
+      showNotification(`${data.newPlayer} joined the lobby!`, 'info');
+      break;
+      
+    case 'PLAYER_LEFT':
+      updateLobbyPlayerList(data.players);
+      
+      if (data.newHost === myPlayerId) {
+        isHost = true;
+        document.getElementById('startGameBtn').classList.remove('d-none');
+        showNotification('You are now the host!', 'warning');
+      }
+      break;
+      
+    case 'GAME_STARTED':
+      isMultiplayer = true;
+      initializeMultiplayerGame(data);
+      break;
+      
+    case 'PLAYER_MOVED':
+      if (data.playerId !== myPlayerId) {
+        if (!otherPlayers[data.playerId]) {
+          otherPlayers[data.playerId] = {};
+        }
+        otherPlayers[data.playerId].row = data.row;
+        otherPlayers[data.playerId].col = data.col;
+        renderGrid();
+      }
+      break;
+      
+    case 'TILES_REVEALED':
+      data.cells.forEach(cell => {
+        if (grid[cell.row] && grid[cell.row][cell.col]) {
+          grid[cell.row][cell.col].revealed = true;
+          grid[cell.row][cell.col].adjacentMines = cell.adjacentMines;
+          if (!grid[cell.row][cell.col].mine) {
+            revealedCount++;
+          }
+        }
+      });
+      
+      if (data.playerId === myPlayerId) {
+        streak++;
+      }
+      
+      renderGrid();
+      updateStats();
+      break;
+      
+    case 'PLAYER_HIT_MINE':
+      if (grid[data.row] && grid[data.row][data.col]) {
+        grid[data.row][data.col].revealed = true;
+        grid[data.row][data.col].mine = true;
+      }
+      
+      if (data.playerId === myPlayerId) {
+        gameOver = true;
+        streak = 0;
+        document.body.classList.add('shake');
+        setTimeout(() => document.body.classList.remove('shake'), 300);
+        stopTimer();
+        clearAllTimers();
+        renderGrid();
+        showGameOver();
+      } else {
+        showNotification(`${data.playerName} hit a mine!`, 'danger');
+        if (otherPlayers[data.playerId]) {
+          otherPlayers[data.playerId].alive = false;
+        }
+      }
+      renderGrid();
+      break;
+      
+    case 'FLAG_TOGGLED':
+      if (grid[data.row] && grid[data.row][data.col]) {
+        grid[data.row][data.col].flagged = data.flagged;
+        flagCount += data.flagged ? 1 : -1;
+        renderGrid();
+        updateStats();
+      }
+      break;
+      
+    case 'GAME_WON':
+      gameWon = true;
+      stopTimer();
+      clearAllTimers();
+      renderGrid();
+      updateStats();
+      showGameWin();
+      break;
+      
+    case 'ERROR':
+      showNotification(data.message, 'danger');
+      break;
+  }
+}
 
+function updateLobbyPlayerList(players) {
+  const list = document.getElementById('lobbyPlayerList');
+  list.innerHTML = '';
+  
+  players.forEach((player, index) => {
+    const li = document.createElement('li');
+    li.style.color = '#00ffcc';
+    li.style.fontSize = '1.2rem';
+    li.style.margin = '0.5rem 0';
+    
+    let text = `🕵️ ${player.name || player}`;
+    if (index === 0) text += ' 👑 (HOST)';
+    
+    li.textContent = text;
+    list.appendChild(li);
+  });
+  
+  if (isHost && players.length >= 1) {
+    document.getElementById('startGameBtn').disabled = false;
+  }
+}
 
-const SAFE_ZONE_RATIO = 1 / 60;  // Fewer safe zones
-const TRAP_SUSPICION_FAKEOUT_CHANCE = 0.2;
-const SUSPICION_VISIBILITY_CHANCE = 0.8;
+// ============================================================================
+// LOBBY BUTTON HANDLERS
+// ============================================================================
 
-// === GENERATE MAZE CHANGES ===
-const MAX_YELLOW_PER_TRAP = 2; // Limit yellow tiles per trap
+document.getElementById('createLobbyBtn').addEventListener('click', () => {
+  const playerName = document.getElementById('playerName').value.trim();
+  
+  if (!playerName) {
+    showNotification('Enter your agent name!', 'danger');
+    return;
+  }
+  
+  if (!socket || socket.readyState !== WebSocket.OPEN) {
+    connectToServer();
+    setTimeout(() => {
+      socket.send(JSON.stringify({
+        type: 'CREATE_LOBBY',
+        playerName: playerName,
+        difficulty: 'intermediate',
+        maxPlayers: 4
+      }));
+    }, 500);
+  } else {
+    socket.send(JSON.stringify({
+      type: 'CREATE_LOBBY',
+      playerName: playerName,
+      difficulty: 'intermediate',
+      maxPlayers: 4
+    }));
+  }
+});
+
+document.getElementById('joinLobbyBtn').addEventListener('click', () => {
+  const playerName = document.getElementById('playerName').value.trim();
+  const lobbyCode = document.getElementById('lobbyCodeInput').value.trim().toUpperCase();
+  
+  if (!playerName) {
+    showNotification('Enter your agent name!', 'danger');
+    return;
+  }
+  
+  if (!lobbyCode || lobbyCode.length !== 6) {
+    showNotification('Enter valid 6-digit lobby code!', 'danger');
+    return;
+  }
+  
+  if (!socket || socket.readyState !== WebSocket.OPEN) {
+    connectToServer();
+    setTimeout(() => {
+      socket.send(JSON.stringify({
+        type: 'JOIN_LOBBY',
+        playerName: playerName,
+        lobbyCode: lobbyCode
+      }));
+    }, 500);
+  } else {
+    socket.send(JSON.stringify({
+      type: 'JOIN_LOBBY',
+      playerName: playerName,
+      lobbyCode: lobbyCode
+    }));
+  }
+});
+
+document.getElementById('startGameBtn').addEventListener('click', () => {
+  socket.send(JSON.stringify({
+    type: 'START_GAME'
+  }));
+});
+
+document.getElementById('leaveLobbyBtn').addEventListener('click', () => {
+  socket.send(JSON.stringify({
+    type: 'LEAVE_LOBBY'
+  }));
+  
+  document.getElementById('lobbyWaiting').classList.add('d-none');
+  document.getElementById('lobbyMenu').classList.remove('d-none');
+  currentLobbyCode = null;
+  isHost = false;
+});
+
+document.getElementById('singlePlayerBtn').addEventListener('click', () => {
+  currentScreen = 'title';
+  isMultiplayer = false;
+  document.getElementById('lobbyScreen').classList.add('d-none');
+  document.getElementById('titleScreen').classList.remove('d-none');
+});
+
+// ============================================================================
+// STORY MODAL
+// ============================================================================
 
 const storyText = `We know it's been 35 years since your last operation — flagging and discovering the mines at Microsoft. But when it comes to those dreaded bombs, nobody can read them like you.
 
-The agency needs you back, one last time. Your mission should you choose to accept it: infiltrate The Gauntlet — a volatile, shifting maze laced with traps, misdirection, and everchangig shifting chaos. Every step could trigger the end. The layout changes. The danger adapts.
+The agency needs you back, one last time. Your mission should you choose to accept it: infiltrate The Gauntlet — a volatile, shifting maze laced with traps, misdirection, and everchanging shifting chaos. Every step could trigger the end. The layout changes. The danger adapts.
 
 Outthink the field. Outsmart the traps. Outlive the maze.
 
@@ -442,61 +1209,6 @@ document.getElementById('closeStoryBtn').addEventListener('click', () => {
   document.getElementById('storyOverlay').style.display = 'none';
 });
 
-function showFinalScoreboard() {
-  document.getElementById('scoreboard').style.display = 'block';
-
-  const finalTitle = document.getElementById('finalOutcome');
-  const finalScore = document.getElementById('finalScore');
-  const finalDodges = document.getElementById('finalDodges');
-  const finalFails = document.getElementById('finalFails');
-  const finalTime = document.getElementById('finalTime');
-
-  finalScore.textContent = score;
-  finalDodges.textContent = dodgeCount;
-  finalFails.textContent = failCount;
-  finalTime.textContent = timerDisplay.textContent;
-
-  if (lives <= 0) {
-    finalTitle.textContent = 'MISSION FAILED (Mission Training Started)';
-    finalTitle.classList.remove('text-info');
-    finalTitle.classList.add('text-danger');
-    checkWinCondition();
-  } else {
-    finalTitle.textContent = 'MISSION COMPLETE';
-    finalTitle.classList.remove('text-info');
-    finalTitle.classList.add('text-success');
-    checkWinCondition();
-  }
-}
-
-function checkClearCondition() {
-  const allClear = mazeData.every(cell =>
-    cell.trap || cell.visible || cell.safeZone || cell.blocker
-  );
-
-  if (allClear && lives > 0) {
-    clearInterval(timerInterval);
-    clearInterval(powerUpTimer);
-    clearInterval(mysteryTimer);
-    clearInterval(tankTimer);
-
-    showNotification('✅ All clear! Mission complete.', 'success');
-
-    document.getElementById('finalOutcome').textContent = 'MISSION COMPLETE';
-    document.getElementById('finalOutcome').classList.remove('text-danger');
-    document.getElementById('finalOutcome').classList.add('text-success');
-
-    document.getElementById('finalScore').textContent = score;
-    document.getElementById('finalDodges').textContent = dodgeCount;
-    document.getElementById('finalFails').textContent = failCount;
-    document.getElementById('finalTime').textContent = formatTime(timeElapsed);
-
-    document.getElementById('scoreboard').style.display = 'block';
-  }
-}
-
-
-
 document.getElementById('nextBtn').addEventListener('click', () => {
   clearInterval(typingInterval);
   isTyping = false;
@@ -509,12 +1221,18 @@ document.getElementById('nextBtn').addEventListener('click', () => {
     content.innerHTML = 
       `🚩 Use arrow keys to move<br>
       💣 Avoid the red mines<br>
-      💥 Press Q to deactivate the mines<br>
-      ⚠️ Yellow = danger suspicion<br>
-      ⛔ Blockers stop you<br>
-      ❓ Reach the mystery tiles in time<br>
-      💎 Collect power-ups to survive<br>
-      🕒 The board is always changing<br><br>
+      💥 Press SPACE to scan tiles<br>
+      🚩 Press F to flag suspected mines<br>
+      🛸 EVADE corporate drones - they never stop!<br>
+      💥 Proximity mines EXPLODE if you're too close!<br>
+      🔮 Anomalies re-cover discovered areas<br>
+      ⚡ Static interference hides tile info<br>
+      🌑 EMP blackouts temporarily blind you<br>
+      ⚠️ Numbers = exact mine count nearby<br>
+      🎯 Build streaks by scanning safe tiles<br>
+      ⏰ DANGER ESCALATES OVER TIME!<br>
+      🔄 Press R to restart<br><br>
+      Use Logic And Deduction To Clear The Field<br><br>
     For Security Purposes The Rest Of The Information Has Been Omitted`;
     document.getElementById('nextBtn').textContent = 'Back';
   } else {
@@ -524,1204 +1242,1412 @@ document.getElementById('nextBtn').addEventListener('click', () => {
   }
 });
 
+// ============================================================================
+// DIFFICULTY SELECTION (SINGLE PLAYER)
+// ============================================================================
 
-
-// === GENERATE MAZE CHANGES ===
-function generateMaze() {
-  const totalCells = size * size;
-  const trapTargetCount = Math.floor(totalCells * 0.5); // 50% of tiles are traps
-  let trapsPlaced = 0;
-
-  const blockerCount = 32;
-  let blockersPlaced = 0;
-  let safetyTries = 0;
-  const MAX_TRIES = 5000;
-
-  // Initialize all maze tiles
-  mazeData = Array.from({ length: totalCells }, () => ({
-    trap: false,
-    visible: false,
-    triggered: false,
-    suspicious: false,
-    suspicionLevel: 0,
-    marked: false,
-    pingVisible: false,
-    revealedAsClue: false,
-    safeZone: false,
-    neutral: false,
-    showSuspicion: false,
-    powerUp: null,
-    blocker: false,
-    beacon: false
-  }));
-
-  // Safe zones
-  const numSafeZones = Math.floor(totalCells * SAFE_ZONE_RATIO);
-  const safeZoneIndexes = new Set();
-  while (safeZoneIndexes.size < numSafeZones) {
-    safeZoneIndexes.add(Math.floor(Math.random() * totalCells));
-  }
-
-  const safeZoneArray = Array.from(safeZoneIndexes);
-  playerPos = safeZoneArray[Math.floor(Math.random() * safeZoneArray.length)];
-
-  safeZoneIndexes.forEach(index => {
-    mazeData[index].safeZone = true;
-    mazeData[index].visible = true;
+document.querySelectorAll('.difficulty-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const difficulty = btn.dataset.difficulty;
+    const config = difficulties[difficulty];
+    currentScreen = 'game';
+    isMultiplayer = false;
+    startGame(config.rows, config.cols, config.mines);
   });
+});
 
-  // Trap clusters (around 30 cluster centers)
-  const dangerTileCount = 30;
-  for (let i = 0; i < dangerTileCount; i++) {
-    const center = Math.floor(Math.random() * totalCells);
-    const row = Math.floor(center / size);
-    const col = center % size;
+// ============================================================================
+// GAME INITIALIZATION
+// ============================================================================
 
-    if (
-      safeZoneIndexes.has(center) ||
-      center === playerPos ||
-      row < 1 || row >= size - 1 ||
-      col < 1 || col >= size - 1
-    ) continue;
+function startGame(r, c, m) {
+  rows = r;
+  cols = c;
+  mineCount = m;
+  flagCount = 0;
+  revealedCount = 0;
+  gameOver = false;
+  gameWon = false;
+  timeElapsed = 0;
+  firstClick = true;
+  streak = 0;
+  threatLevel = 0;
+  droneActive = false;
+  drone2Active = false;
+  anomalyActive = false;
+  staticInterferenceActive = false;
+  empBlackoutActive = false;
+  proximityMines = [];
+  interferenceCells = [];
+  empCharges = 1;
+  empPowerupActive = false;
+  empTrapBombs = [];
+  hazardTiles = [];
+  playerSlowed = false;
+  playerFrozen = false;
+  otherPlayers = {};
+  
+  playerRow = Math.floor(rows / 2);
+  playerCol = Math.floor(cols / 2);
 
-    const directions = [-1, 1, -size, size];
-    let trapsAround = 0;
-
-    directions.forEach(offset => {
-      const target = center + offset;
-      if (
-        target !== playerPos &&
-        !safeZoneIndexes.has(target) &&
-        !mazeData[target].trap &&
-        trapsPlaced < trapTargetCount
-      ) {
-        mazeData[target].trap = true;
-        trapsPlaced++;
-        trapsAround++;
-      }
-    });
-
-    if (trapsAround < 3) i--; // try again if too few traps placed
-    if (trapsPlaced >= trapTargetCount) break;
-  }
-
-  // Fallback: place remaining traps to reach trapTargetCount
-  while (trapsPlaced < trapTargetCount) {
-    const index = Math.floor(Math.random() * totalCells);
-    if (
-      !mazeData[index].trap &&
-      !safeZoneIndexes.has(index) &&
-      index !== playerPos &&
-      !mazeData[index].blocker
-    ) {
-      mazeData[index].trap = true;
-      trapsPlaced++;
-    }
-  }
-
-  // Place blockers
-  while (blockersPlaced < blockerCount && safetyTries < MAX_TRIES) {
-    const index = Math.floor(Math.random() * totalCells);
-    const cell = mazeData[index];
-
-    if (
-      !cell.trap &&
-      !cell.safeZone &&
-      !cell.powerUp &&
-      !cell.blocker &&
-      !cell.beacon &&
-      !cell.neutral
-    ) {
-      cell.blocker = true;
-      cell.visible = false;
-      cell.pingVisible = false;
-      cell.triggered = false;
-      cell.revealedAsClue = false;
-
-      // Clean out everything else to make it a pure blocker
-      cell.trap = false;
-      cell.safeZone = false;
-      cell.powerUp = null;
-      cell.neutral = false;
-      if (index !== playerPos) { 
-  cell.suspicionLevel = 0;
-  cell.revealedAsClue = false;
-  cell.showSuspicion = false;
+  currentScreen = 'game';
+  
+  document.getElementById('lobbyScreen').classList.add('d-none');
+  document.getElementById('titleScreen').classList.add('d-none');
+  document.getElementById('gameScreen').classList.remove('d-none');
+  
+  initializeGrid();
+  renderGrid();
+  updateStats();
+  updateThreatLevel();
+  
+  clearAllTimers();
+  
+  schedulePhases();
 }
 
-      cell.revealedAsClue = false;
-
-      blockersPlaced++;
-    }
-
-    safetyTries++;
-  }
-
-  // Ensure player starting tile is visible
-  mazeData[playerPos].visible = true;
-}
-
-
-placePowerUps();
-startBeaconTimer();
-
-function applyCombo() {
-  comboCount++;
-  comboMultiplier = 1 + Math.floor(comboCount / 3);
-  showNotification(`Combo x${comboMultiplier}!, 'info'`);
-  score += 10 * comboMultiplier;
-  scoreDisplay.textContent = score;
-}
-
-function resetCombo() {
-  comboCount = 0;
-  comboMultiplier = 1;
-}
-
-
-function placePowerUps() {
-  mazeData.forEach(cell => cell.powerUp = null);
-  for (let i = 0; i < 5; i++) {
-    const index = Math.floor(Math.random() * totalCells);
-    if (!mazeData[index].trap && !mazeData[index].safeZone) {
-      mazeData[index].powerUp = POWER_UP_TYPES[Math.floor(Math.random() * POWER_UP_TYPES.length)];
-    }
-  }
-}
-
-function collectPowerUp(index) {
-  const cell = mazeData[index];
-  if (!cell.powerUp) return;
-
-  switch (cell.powerUp) {
-  case 'safeStep':
-    hasSafeStep = true;
-    showNotification('🧯 Safe Step Collected!', 'success');
-    break;
-
-  case 'slowTime':
-    dodgeDelay = 1000;
-    showNotification('⚡ Dodge Time Boosted!', 'info');
-    setTimeout(() => dodgeDelay = TRAP_DAMAGE_DELAY, 10000);
-    break;
-
-  case 'speedBoost':
-    speedBoostActive = true;
-    showNotification('🏃‍♂️ Speed Boost Activated!', 'info');
-    setTimeout(() => speedBoostActive = false, 5000);
-    break;
-}
-
-
-  cell.powerUp = null;
-  renderMaze();
-}
-
-function startBeaconTimer() {
-  if (beaconTimer) clearInterval(beaconTimer);
-  beaconTimer = setInterval(() => {
-    nextBeaconTime--;
-    if (nextBeaconTime <= 0) {
-      spawnBeaconTile();
-      nextBeaconTime = 47;
-    }
-  }, 1000);
-}
-
-function spawnBeaconTile() {
-  const directions = [
-    [-1, 0], [1, 0],    // Up, Down
-    [0, -1], [0, 1],    // Left, Right
-    [-1, -1], [-1, 1],  // Diagonals
-    [1, -1], [1, 1]
-  ];
-
-  const playerRow = Math.floor(playerPos / size);
-  const playerCol = playerPos % size;
-
-  const possibleIndices = [];
-
-  for (const [dr, dc] of directions) {
-    const nr = playerRow + dr * 5;
-    const nc = playerCol + dc * 5;
-
-    if (nr >= 0 && nr < size && nc >= 0 && nc < size) {
-      const index = nr * size + nc;
-      possibleIndices.push(index);
-    }
-  }
-
-  if (possibleIndices.length === 0) return;
-
-  beaconIndex = possibleIndices[Math.floor(Math.random() * possibleIndices.length)];
-  mazeData[beaconIndex].beacon = true;
-
-  renderMaze();
-  showNotification('🚨 Reach the Beacon Tile!', 'warning');
-
-  setTimeout(() => {
-    if (playerPos !== beaconIndex) {
-      triggerBeaconFail();
-    }
-    if (mazeData[beaconIndex]) {
-      mazeData[beaconIndex].beacon = false;
-    }
-    beaconIndex = null;
-    renderMaze();
-  }, 20000);
-}
-
-
-function triggerBeaconFail() {
-  showNotification('Missed the beacon! Nearby traps activated!', 'danger');
-
-  const nearbyOffsets = [-1, 1, -size, size, 0];
-  nearbyOffsets.forEach(offset => {
-    const ni = playerPos + offset;
-    if (ni >= 0 && ni < mazeData.length && !mazeData[ni].trap) {
-      mazeData[ni].trap = true;
-      mazeData[ni].beaconSpawned = true; // ✅ mark as beacon-spawned trap
-    }
-  });
-
-  renderMaze();
-}
-
-function spawnMysteryTile() {
-  let index;
-  do {
-    index = Math.floor(Math.random() * mazeData.length);
-  } while (
-    mazeData[index].trap ||
-    mazeData[index].safeZone ||
-    mazeData[index].blocker ||
-    mazeData[index].powerUp ||
-    mazeData[index].beacon ||
-    mazeData[index].mystery ||
-    !mazeData[index].visible
-  );
-
-  mazeData[index].mystery = true;
-  renderMaze();
-  showNotification('🟪 A mystery tile has appeared!', 'info');
-
-  // Start 20s timer
-  setTimeout(() => {
-    if (playerPos === index) {
-      transformMysteryTile(index);
+function initializeMultiplayerGame(data) {
+  console.log('Received game data:', data);
+  
+  const gridData = data.gridData;
+  
+  rows = gridData.rows;
+  cols = gridData.cols;
+  mineCount = gridData.mineCount;
+  grid = gridData.grid;
+  
+  console.log('Set up game:', rows, 'x', cols, 'with', mineCount, 'mines');
+  
+  flagCount = 0;
+  revealedCount = 0;
+  gameOver = false;
+  gameWon = false;
+  timeElapsed = 0;
+  firstClick = false;
+  streak = 0;
+  threatLevel = 0;
+  droneActive = false;
+  drone2Active = false;
+  anomalyActive = false;
+  staticInterferenceActive = false;
+  empBlackoutActive = false;
+  proximityMines = [];
+  interferenceCells = [];
+  empCharges = 1;
+  empPowerupActive = false;
+  empTrapBombs = [];
+  hazardTiles = [];
+  playerSlowed = false;
+  playerFrozen = false;
+  
+  // Set up other players
+  otherPlayers = {};
+  data.players.forEach(p => {
+    if (p.id === myPlayerId) {
+      playerRow = p.row;
+      playerCol = p.col;
     } else {
-      punishMissedMysteryTile(index);
+      otherPlayers[p.id] = {
+        name: p.name,
+        row: p.row,
+        col: p.col,
+        alive: p.alive
+      };
     }
-    mazeData[index].mystery = false;
-    renderMaze();
+  });
+  
+  console.log('Player starting at:', playerRow, playerCol);
+  console.log('Other players:', otherPlayers);
+
+  currentScreen = 'game';
+  
+  document.getElementById('lobbyScreen').classList.add('d-none');
+  document.getElementById('titleScreen').classList.add('d-none');
+  document.getElementById('gameScreen').classList.remove('d-none');
+  
+  renderGrid();
+  updateStats();
+  updateThreatLevel();
+  
+  clearAllTimers();
+  startTimer();
+  schedulePhases();
+}
+
+function clearAllTimers() {
+  if (timerInterval) clearInterval(timerInterval);
+  if (droneInterval) clearInterval(droneInterval);
+  if (droneSpawnTimer) clearTimeout(droneSpawnTimer);
+  if (drone2Interval) clearInterval(drone2Interval);
+  if (drone2SpawnTimer) clearTimeout(drone2SpawnTimer);
+  if (anomalySpawnTimer) clearInterval(anomalySpawnTimer);
+  if (anomalyCountdownInterval) clearInterval(anomalyCountdownInterval);
+  if (proximitySpawnTimer) clearTimeout(proximitySpawnTimer);
+  if (staticInterferenceTimer) clearInterval(staticInterferenceTimer);
+  if (empBlackoutTimer) clearInterval(empBlackoutTimer);
+  if (empPowerupSpawnTimer) clearInterval(empPowerupSpawnTimer);
+  if (empPowerupTimeout) clearTimeout(empPowerupTimeout);
+  if (hazardSpawnTimer) clearInterval(hazardSpawnTimer);
+  
+  document.body.classList.remove('chaos-mode-active');
+  document.getElementById('maze').classList.remove('emp-blackout');
+}
+
+function schedulePhases() {
+  setTimeout(() => {
+    spawnEMPPowerup();
+    empPowerupSpawnTimer = setInterval(() => {
+      spawnEMPPowerup();
+    }, 45000);
   }, 20000);
-}
-
-function transformMysteryTile(index) {
-  const cell = mazeData[index];
-  const types = ['trap', 'safeZone', 'neutral', 'blocker'];
-  const choice = types[Math.floor(Math.random() * types.length)];
-
-  // Reset
-  cell.trap = cell.safeZone = cell.neutral = cell.blocker = false;
-
-  switch (choice) {
-    case 'trap': cell.trap = true; break;
-    case 'safeZone': cell.safeZone = true; break;
-    case 'neutral': cell.neutral = true; break;
-    case 'blocker': cell.blocker = true; break;
-  }
-
-  showNotification(`Mystery tile turned into a ${choice.toUpperCase()}!, 'warning'`);
-}
-
-function punishMissedMysteryTile(index) {
-  const centerRow = Math.floor(index / size);
-  const centerCol = index % size;
-
-  for (let dr = -2; dr <= 2; dr++) {
-    for (let dc = -2; dc <= 2; dc++) {
-      const nr = centerRow + dr;
-      const nc = centerCol + dc;
-      const ni = nr * size + nc;
-
-      if (nr >= 0 && nr < size && nc >= 0 && nc < size) {
-        const cell = mazeData[ni];
-        cell.visible = false;
-        cell.pingVisible = false;
-        cell.suspicionLevel = 0;
-        cell.showSuspicion = false;
-
-        // Randomize the tile
-        const roll = Math.random();
-cell.trap = cell.safeZone = cell.blocker = cell.neutral = false;
-
-if (roll < 0.4) {
-  cell.trap = true;
-} else if (roll > 0.6 ) {
-  cell.neutral = true;
-} else {
-  cell.blocker = true;
-}
-      }
-    }
-  }
-
-  showNotification('⚠️ You missed the mystery tile — the board has changed!', 'danger');
-}
-
-
-function renderMaze() {
-  maze.innerHTML = '';
-maze.style.gridTemplateColumns = `repeat(${size}, 30px)`;
-  document.querySelectorAll('.cell.player').forEach(cell => {
-    cell.classList.remove('player');
-  });
-
-  const suspicionColors = {
-    1: 'navy',
-    2: 'darkgreen',
-    3: 'maroon',
-    4: 'darkviolet',
-    5: 'saddlebrown',
-    6: 'teal',
-    7: 'black',
-    8: 'dimgray'
-  };
-
-  mazeData.forEach((cell, i) => {
-    const div = document.createElement('div');
-    div.classList.add('cell');
-
-    if (tankActive && i === tankPosition) {
-  div.textContent = '🛸';
-  div.style.backgroundColor = '#222';
-  div.style.border = '2px solid cyan';
-  div.style.boxShadow = '0 0 10px cyan';
-}
-
-
-    // Visibility logic
-    if (
-  cell.visible || 
-  cell.pingVisible || 
-  i === playerPos || 
-  Object.values(otherPlayers).includes(i) || 
-  cell.blocker
-) {
-  div.classList.add('visible');
-} else {
-  div.classList.add('hidden');
-}
-
-
-    // === Core Tile Rendering ===
-
-    // Blockers
-    if (cell.blocker && (cell.visible || cell.pingVisible)) {
-  div.classList.add('blocker');
-  div.style.backgroundColor = '#333';
-  div.style.border = '2px solid #888';
-  div.style.boxShadow = 'inset 0 0 6px #111';
-  div.textContent = '🛑'; // or leave as icon if you use one
-
-
-
-    // Safe Zones
-    }else if (cell.safeZone) {
-      div.style.backgroundColor = '#00ccff';
-      div.style.border = '2px solid white';
-    }
-
-    // PowerUps (only if not a blocker/beacon)
-    else if (cell.powerUp && !cell.beacon) {
-      div.textContent = {
-        safeStep: '🧯',
-        slowTime: '⚡',
-        speedBoost: '🏃‍♂️'
-      }[cell.powerUp] || '🔹';
-      div.style.backgroundColor = '#99f';
-    }
-
-    // Beacon tile
-    if (cell.beacon) {
-      div.classList.add('beacon');
-      div.style.backgroundColor = '#ffff00';
-      div.style.border = '2px solid black';
-      div.textContent = '🚨';
-    }
-
-    if (cell.mystery && (cell.visible || cell.pingVisible)) {
-  div.style.backgroundColor = 'purple';
-  div.style.border = '2px dashed white';
-  div.textContent = '?';
-}
-
-
-    // Suspicious clue tiles (shown only if not trap/blocker/safezone)
-    const isNearPlayer = Math.abs(i - playerPos) <= size + 1;
-    if (
-      isNearPlayer &&
-      (cell.visible || cell.pingVisible) &&
-      !cell.trap &&
-      cell.suspicionLevel > 0 &&
-      !cell.safeZone &&
-      !cell.blocker &&
-      !cell.powerUp
-    ) {
-      div.classList.add('suspicious');
-      const levelDiv = document.createElement('div');
-      levelDiv.style.fontSize = '0.8rem';
-      levelDiv.style.fontWeight = 'bold';
-      levelDiv.style.color = suspicionColors[cell.suspicionLevel] || 'white';
-      levelDiv.style.textAlign = 'center';
-      levelDiv.textContent = '!'.repeat(Math.min(cell.suspicionLevel, 3));
-      div.appendChild(levelDiv);
-div.style.backgroundColor = `rgba(255, 255, 0, ${0.3 + 0.15 * cell.suspicionLevel})`;
-    }
-
-    // Neutral (blank) tile – only if not anything else
-    else if (
-      cell.neutral &&
-      !cell.trap &&
-      !cell.blocker &&
-      !cell.safeZone &&
-      !cell.powerUp &&
-      !cell.showSuspicion &&
-      !cell.beacon
-    ) {
-      div.style.backgroundColor = '#222';
-      div.style.border = '1px solid #444';
-      div.textContent = '';
-    }
-
-    // Player
-    if (i === playerPos) {
-      div.classList.add('player');
-      div.classList.remove('hidden');
-      div.classList.add('visible');
-      div.textContent = cell.trap && !canDodge ? '☠️' : '🕵️‍♂️';
-
-      if (cell.trap) {
-        div.style.animation = 'flashReveal 0.3s ease';
-        div.style.backgroundColor = 'red';
-      }
-
-      if (tankActive && i === tankPosition) {
-  div.textContent = '🛸'; // ✅ Drone icon instead of car
-  div.style.backgroundColor = '#222'; // dark stealth background
-  div.style.border = '2px solid cyan'; // neon cyan border
-  div.style.boxShadow = '0 0 10px cyan'; // glowing effect
-}
-
-
-
-      if (cell.blocker) {
-        div.style.backgroundColor = '#333';
-        div.style.border = '2px solid #888';
-        div.style.boxShadow = 'inset 0 0 6px #111';
-      }
-
-      if (cell.neutral) {
-        div.style.backgroundColor = '#222';
-        div.style.border = '1px solid #444';
-        div.textContent = '';
-      }
-    }
-
-    // Other players
-    else if (Object.values(otherPlayers).includes(i)) {
-      div.classList.add('other-player');
-    }
-
-    // Triggered trap tile (not player)
-    else if (cell.triggered && cell.trap) {
-      div.classList.add('trap');
-    }
-
-    if (i === playerPos && cell.suspicionLevel > 0 && !cell.safeZone) {
-  if (suspiciousAccumulated === 1) {
-    div.style.boxShadow = '0 0 10px 5px orange';
-  } else if (suspiciousAccumulated === 2) {
-    div.style.boxShadow = '0 0 15px 10px red';
-  } else if (suspiciousAccumulated >= 3) {
-    div.style.boxShadow = '0 0 20px 15px darkred';
-  }
-  div.style.animation = 'dangerPulse 1s infinite';
-}
-
-if (i === playerPos && cell.safeZone) {
-  div.style.animation = 'safePulse 2s infinite';
-  div.style.boxShadow = '0 0 10px 4px #00ccff';
-}
-
-
-    maze.appendChild(div);
-  });
-
-  // Auto-scroll to player
+  
+  droneSpawnTimer = setTimeout(() => {
+    spawnDrone();
+    threatLevel = 1;
+    updateThreatLevel();
+  }, 30000);
+  
   setTimeout(() => {
-    const playerCell = document.querySelector('.cell.player');
-    if (playerCell) {
-      const playerBottom = playerCell.getBoundingClientRect().bottom;
-      const viewportBottom = window.innerHeight;
-      if (playerBottom > viewportBottom - 100) {
-        window.scrollBy({
-          top: playerBottom - viewportBottom + 120,
-          behavior: 'smooth'
-        });
-      }
-    }
-  }, 0);
-}
-
-
-
-
-
-
-function updateVisibility() {
-  const row = Math.floor(playerPos / size);
-  const col = playerPos % size;
-
-  const yellowTileCounts = new Array(mazeData.length).fill(0);
-
-  // Always apply visibility & suspicion near the player
-  for (let r = -1; r <= 1; r++) {
-    for (let c = -1; c <= 1; c++) {
-      const nr = row + r;
-      const nc = col + c;
-      if (nr >= 0 && nc >= 0 && nr < size && nc < size) {
-        const index = nr * size + nc;
-        const cell = mazeData[index];
-        
-        // ✅ Always reveal nearby tiles, including blockers
-        cell.visible = true;
-
-        // Skip if trap or safe zone
-        if (!cell.trap && !cell.safeZone && !cell.blocker) {
-          let count = 0;
-
-          for (let dr = -1; dr <= 1; dr++) {
-            for (let dc = -1; dc <= 1; dc++) {
-              const rr = nr + dr;
-              const cc = nc + dc;
-              const ni = rr * size + cc;
-              if (
-                rr >= 0 && cc >= 0 &&
-                rr < size && cc < size &&
-                mazeData[ni]?.trap
-              ) {
-                count++;
-              }
-            }
-          }
-
-          if (count > 0 && Math.random() < 0.3 && !cell.neutral) {
-            cell.suspicionLevel = count;
-            cell.revealedAsClue = true;
-            cell.showSuspicion = true;
-          } else {
-            cell.suspicionLevel = 0;
-            cell.revealedAsClue = false;
-            cell.showSuspicion = false;
-          }
-
-          // Track yellow tiles used per trap
-          for (let dr = -1; dr <= 1; dr++) {
-            for (let dc = -1; dc <= 1; dc++) {
-              const rr = nr + dr;
-              const cc = nc + dc;
-              const ni = rr * size + cc;
-              if (
-                rr >= 0 && cc >= 0 &&
-                rr < size && cc < size &&
-                mazeData[ni]?.trap
-              ) {
-                yellowTileCounts[ni]++;
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-
-  // Sometimes apply suspicion near random traps
-  for (let i = 0; i < mazeData.length; i++) {
-    if (!mazeData[i].trap) continue;
-    if (Math.random() < 0.6) continue; // 40% traps = no clue
-
-    const trapRow = Math.floor(i / size);
-    const trapCol = i % size;
-
-    for (let dr = -1; dr <= 1; dr++) {
-      for (let dc = -1; dc <= 1; dc++) {
-        const nr = trapRow + dr;
-        const nc = trapCol + dc;
-        const ni = nr * size + nc;
-
-        if (
-          nr >= 0 && nc >= 0 && nr < size && nc < size &&
-          !mazeData[ni].trap &&
-          !mazeData[ni].neutral &&
-          !mazeData[ni].showSuspicion &&
-          !mazeData[ni].blocker && // ✅ don't show suspicion on blockers
-          Math.random() < SUSPICION_VISIBILITY_CHANCE &&
-          yellowTileCounts[i] < MAX_YELLOW_PER_TRAP
-        ) {
-          mazeData[ni].suspicionLevel = 1 + Math.floor(Math.random() * 3);
-          mazeData[ni].revealAsClue = true;
-          mazeData[ni].showSuspicion = true;
-          yellowTileCounts[i]++;
-        }
-      }
-    }
-  }
-}
-
-function revealPingClues(centerIndex) {
-  const row = Math.floor(centerIndex / size);
-  const col = centerIndex % size;
-  const range = 2;
-  const pingCount = Math.floor(Math.random() * 5) + 3;
-
-  const candidates = [];
-
-  for (let r = -range; r <= range; r++) {
-    for (let c = -range; c <= range; c++) {
-      const nr = row + r;
-      const nc = col + c;
-      if (nr >= 0 && nc >= 0 && nr < size && nc < size) {
-        const index = nr * size + nc;
-        const cell = mazeData[index];
-
-        if (!cell.visible && !cell.trap && !cell.pingVisible) {
-          candidates.push(index);
-        }
-      }
-    }
-  }
-
-  const selected = [];
-  while (selected.length < pingCount && candidates.length > 0) {
-    const idx = Math.floor(Math.random() * candidates.length);
-    selected.push(candidates.splice(idx, 1)[0]);
-  }
-
-  // Temporarily mark them as ping-visible
-  selected.forEach(index => {
-    mazeData[index].pingVisible = true;
-  });
-
-  renderMaze();
-
-  // Remove the ping after 2 seconds
+    anomalySpawnTimer = setInterval(() => {
+      spawnAnomaly();
+    }, anomalySpawnInterval);
+  }, 30000);
+  
   setTimeout(() => {
-    selected.forEach(index => {
-      mazeData[index].pingVisible = false;
-    });
-    renderMaze();
-  }, 2000);
+    threatLevel = 2;
+    updateThreatLevel();
+    staticInterferenceTimer = setInterval(() => {
+      triggerStaticInterference();
+    }, 20000);
+  }, 60000);
+  
+  proximitySpawnTimer = setTimeout(() => {
+    spawnProximityMine();
+  }, 75000);
+  
+  setTimeout(() => {
+    threatLevel = 3;
+    updateThreatLevel();
+    empBlackoutTimer = setInterval(() => {
+      triggerEMPBlackout();
+    }, 40000);
+    
+    setTimeout(() => spawnProximityMine(), 15000);
+  }, 90000);
+  
+  setTimeout(() => {
+    threatLevel = 4;
+    updateThreatLevel();
+    clearInterval(anomalySpawnTimer);
+    anomalySpawnInterval = 15000;
+    anomalySpawnTimer = setInterval(() => {
+      spawnAnomaly();
+    }, anomalySpawnInterval);
+  }, 120000);
+  
+  drone2SpawnTimer = setTimeout(() => {
+    threatLevel = 5;
+    updateThreatLevel();
+    spawnDrone2();
+    document.body.classList.add('chaos-mode-active');
+    showNotification('🚨 CHAOS MODE ACTIVATED! 🚨', 'danger');
+  }, 150000);
+
+  setTimeout(() => {
+    spawnHazardTile();
+    hazardSpawnTimer = setInterval(() => {
+      spawnHazardTile();
+    }, 8000);
+  }, 10000);
 }
 
-
-
-
-
-
-function movePlayer(dir) {
-  if (movementLocked) return;
-  movementLocked = true;
-  setTimeout(() => movementLocked = false, speedBoostActive ? 80 : 50);
-
-  let newPos = playerPos;
-  if (dir === 'ArrowUp' && playerPos >= size) newPos -= size;
-  if (dir === 'ArrowDown' && playerPos < size * (size - 1)) newPos += size;
-  if (dir === 'ArrowLeft' && playerPos % size !== 0) newPos -= 1;
-  if (dir === 'ArrowRight' && playerPos % size !== size - 1) newPos += 1;
-
-  const targetCell = mazeData[newPos];
-
-  // ✅ Don't move if blocker
-  if (targetCell.blocker) {
-    // Optional: flash or shake the blocker
-    const cellDivs = document.querySelectorAll('.cell');
-    const blockerDiv = cellDivs[newPos];
-    if (blockerDiv) {
-      blockerDiv.style.boxShadow = '0 0 10px 4px white';
-      setTimeout(() => blockerDiv.style.boxShadow = '', 200);
-    }
-    return;
-  }
-
-  // ✅ Now update position
-  playerPos = newPos;
-  const cell = mazeData[playerPos];
-
-  if (
-  !cell.trap && 
-  !cell.safeZone && 
-  !cell.neutral && 
-  !cell.blocker && 
-  !cell.powerUp && 
-  !cell.mystery && 
-  !cell.beacon
-) {
-  cell.suspicionLevel = 1;
-  cell.revealedAsClue = true;
-  cell.showSuspicion = true;
+function updateThreatLevel() {
+  const fill = document.getElementById('threatFill');
+  const label = document.getElementById('threatLabel');
+  
+  fill.className = 'threat-fill threat-level-' + threatLevel;
+  
+  const labels = ['SAFE', 'ALERT', 'DANGER', 'HIGH ALERT', 'CRITICAL', 'CHAOS'];
+  label.textContent = labels[threatLevel] || 'SAFE';
 }
 
-  if (cell.safeZone) {
-    suspiciousAccumulated = 0;
-    if (suspiciousTimer) {
-      clearInterval(suspiciousTimer);
-      suspiciousTimer = null;
-    }
-  }
+// ============================================================================
+// GRID MANAGEMENT
+// ============================================================================
 
-  if (cell.mystery) {
-  transformMysteryTile(playerPos);
-  cell.mystery = false;
+function initializeGrid() {
+  grid = [];
+  for (let r = 0; r < rows; r++) {
+    const row = [];
+    for (let c = 0; c < cols; c++) {
+      row.push({
+        mine: false,
+        revealed: false,
+        flagged: false,
+        adjacentMines: 0
+      });
+    }
+    grid.push(row);
+  }
 }
 
-  cell.triggered = true;
-
-  if (cell.suspicionLevel === 0 || !cell.revealedAsClue) {
-    revealPingClues(playerPos);
-    suspiciousAccumulated = 0;
-    if (suspiciousTimer) {
-      clearInterval(suspiciousTimer);
-      suspiciousTimer = null;
+function placeMines(avoidRow, avoidCol) {
+  let placed = 0;
+  while (placed < mineCount) {
+    const r = Math.floor(Math.random() * rows);
+    const c = Math.floor(Math.random() * cols);
+    
+    const isSafe = Math.abs(r - avoidRow) <= 1 && Math.abs(c - avoidCol) <= 1;
+    
+    if (!grid[r][c].mine && !isSafe) {
+      grid[r][c].mine = true;
+      placed++;
     }
   }
-
-  collectPowerUp(playerPos);
-
-  if (cell.beacon) {
-    showNotification('✅ Beacon Reached!', 'success');
-    score += 50;
-    scoreDisplay.textContent = score;
-    cell.beacon = false;
-    beaconIndex = null;
-  }
-
-  // Trap logic
-  if (cell.trap) {
-    const cellDivs = document.querySelectorAll('.cell');
-    const currentTile = cellDivs[playerPos];
-    if (currentTile) {
-      currentTile.textContent = '💀';
-      currentTile.style.backgroundColor = 'red';
-      currentTile.style.boxShadow = '0 0 15px 5px crimson';
-      setTimeout(() => {
-        currentTile.style.backgroundColor = '';
-        currentTile.style.boxShadow = '';
-      }, 300);
-    }
-
-    document.body.classList.add('shake');
-    setTimeout(() => document.body.classList.remove('shake'), 300);
-
-    trapTriggeredIndex = playerPos;
-    canDodge = true;
-    trapDodgeWindowActive = true;
-    wasDodged = false;
-
-    if (hasSafeStep) {
-      hasSafeStep = false;
-      showNotification('🧯 Auto-safe used!', 'success');
-      trapDodgeWindowActive = false;
-      canDodge = false;
-      wasDodged = true;
-      return;
-    }
-
-    if (currentTrapTimeout) clearTimeout(currentTrapTimeout);
-    currentTrapTimeout = setTimeout(() => {
-      if (!wasDodged) {
-        takeDamage('You Stepped On A Mine');
-        resetCombo();
+  
+  for (let r = 0; r < rows; r++) {
+    for (let c = 0; c < cols; c++) {
+      if (!grid[r][c].mine) {
+        grid[r][c].adjacentMines = countAdjacentMines(r, c);
       }
-      trapDodgeWindowActive = false;
-      canDodge = false;
-      trapTriggeredIndex = null;
-    }, dodgeDelay);
-  }
-
-  if ((cell.revealedAsClue && cell.suspicionLevel > 0) || (cell.neutral && !cell.safeZone && !cell.trap && !cell.blocker)) {
-  if (!suspiciousTimer) {
-    suspiciousAccumulated = 0;
-    suspiciousTimer = setInterval(() => {
-      suspiciousAccumulated++;
-
-      // Dynamically apply glow effect while standing too long
-      const cellDivs = document.querySelectorAll('.cell');
-      const playerTile = cellDivs[playerPos];
-      if (playerTile) {
-        if (suspiciousAccumulated === 1) {
-          playerTile.style.boxShadow = '0 0 10px 5px orange';
-        } else if (suspiciousAccumulated === 2) {
-          playerTile.style.boxShadow = '0 0 15px 10px red';
-        } else if (suspiciousAccumulated >= 3) {
-          playerTile.style.boxShadow = '0 0 20px 15px darkred';
-        }
-        playerTile.style.animation = 'dangerPulse 1s infinite';
-      }
-
-      if (suspiciousAccumulated >= 3) {
-        if (cell.neutral) {
-          takeDamage("You stood too long on a blank tile!");
-        } else {
-          takeDamage("You stood too long on a suspicious tile!");
-        }
-        suspiciousAccumulated = 0;
-        clearInterval(suspiciousTimer);
-        suspiciousTimer = null;
-
-        // Clear glow when damage happens
-        if (playerTile) {
-          playerTile.style.boxShadow = '';
-          playerTile.style.animation = '';
-        }
-      }
-    }, 700);
+    }
   }
 }
 
-
-
-  checkWinCondition();
-  renderMaze();
-  updateVisibility();
-}
-
-
-
-
-
-function hasHiddenNeighbor(index) {
-  const row = Math.floor(index / size);
-  const col = index % size;
+function countAdjacentMines(row, col) {
+  let count = 0;
   for (let dr = -1; dr <= 1; dr++) {
     for (let dc = -1; dc <= 1; dc++) {
       if (dr === 0 && dc === 0) continue;
       const nr = row + dr;
       const nc = col + dc;
-      if (nr >= 0 && nc >= 0 && nr < size && nc < size) {
-        const ni = nr * size + nc;
-        if (!mazeData[ni].visible) return true;
+      if (nr >= 0 && nr < rows && nc >= 0 && nc < cols) {
+        if (grid[nr][nc].mine) count++;
       }
     }
   }
-  return false;
+  return count;
 }
 
+// ============================================================================
+// RENDERING
+// ============================================================================
 
+function renderGrid() {
+  const maze = document.getElementById('maze');
+  maze.innerHTML = '';
+  maze.style.gridTemplateColumns = `repeat(${cols}, 32px)`;
+  
+  for (let r = 0; r < rows; r++) {
+    for (let c = 0; c < cols; c++) {
+      const cell = document.createElement('div');
+      cell.className = 'cell';
+      cell.dataset.row = r;
+      cell.dataset.col = c;
+      
+      const cellData = grid[r][c];
+      
+      const isInterfered = interferenceCells.some(pos => pos.r === r && pos.c === c);
+      if (isInterfered && cellData.revealed) {
+        cell.classList.add('interference');
+      }
+      
+      const proxMine = proximityMines.find(p => p.row === r && p.col === c);
+      if (proxMine && proxMine.active) {
+        cell.classList.add('proximity-mine');
+        cell.textContent = '💥';
+        const countdown = document.createElement('div');
+        countdown.className = 'proximity-countdown';
+        countdown.textContent = proxMine.countdown;
+        cell.appendChild(countdown);
+      }
 
+      if (empPowerupActive && r === empPowerupRow && c === empPowerupCol) {
+        cell.classList.add('emp-powerup');
+        cell.textContent = '⚡';
+      }
 
-checkWinCondition();
+      const isTrapBomb = empTrapBombs.some(bomb => bomb.row === r && bomb.col === c);
+      if (isTrapBomb) {
+        cell.classList.add('emp-trap-bomb');
+        cell.textContent = '💣';
+      }
 
-
-
-function checkWinByFlags() {
-  const allCorrect = mazeData.every(cell => {
-    if (cell.trap) return cell.marked;
-    if (!cell.trap) return cell.visible;
-    return true;
-  });
-
-  if (allCorrect) {
-    clearInterval(timerInterval);
-    showNotification("You cleared the maze!", "success");
-    document.getElementById('finalScore').textContent = score;
-    document.getElementById('finalTime').textContent = formatTime(timeElapsed);
-    document.getElementById('scoreboard').style.display = 'block';
-  }
-}
-
-
-
-function takeDamage(customMessage) {
-  lives--;
-  failCount++;
-  livesDisplay.textContent = lives;
-  document.getElementById('failCount').textContent = failCount;
-
-  if (customMessage) {
-    showNotification(customMessage, 'danger');
-  } else {
-    showNotification('You hit a trap!', 'danger');
-  }
-
-  canDodge = false;
-  trapDodgeWindowActive = false;
-  trapTriggeredIndex = null;
-
-  if (lives <= 0) {
-    clearInterval(timerInterval);
-
-    document.getElementById('finalScore').textContent = score;
-    document.getElementById('finalDodges').textContent = dodgeCount;
-    document.getElementById('finalFails').textContent = failCount;
-    document.getElementById('finalTime').textContent = formatTime(timeElapsed);
-
-    const finalTitle = document.getElementById('finalOutcome');
-    finalTitle.textContent = 'MISSION FAILED (Mission Training Started)';
-    finalTitle.classList.remove('text-info', 'text-success');
-    finalTitle.classList.add('text-danger');
-
-    document.getElementById('scoreboard').style.display = 'block';
-  }
-}
-
-
-
-
-function attemptDodge() {
-  if (canDodge && trapDodgeWindowActive) {
-    clearTimeout(currentTrapTimeout);
-    wasDodged = true;
-    canDodge = false;
-    trapDodgeWindowActive = false;
-    trapTriggeredIndex = null;
-    dodgeCount++;
-    document.getElementById('dodgeCount').textContent = dodgeCount;
-    showDodgeMessage();
-    applyCombo();
-    dodgeCooldown = true;
-    setTimeout(() => (dodgeCooldown = false), 1000);
-  } else {
-    takeDamage("You got hit — you just activated a trap!");
-    resetCombo();
-  }
-}
-
-
-
-function spawnTank() {
-  if (tankActive) return;
-  tankActive = true;
-
-  showNotification('The Corporation Has Become Suspicious And Sent A Drone To Check The Area', 'danger');
-
-  let validSpawn = false;
-  while (!validSpawn) {
-    const randomIndex = Math.floor(Math.random() * mazeData.length);
-    const cell = mazeData[randomIndex];
-    if (!cell.trap && !cell.safeZone && !cell.blocker) {
-      tankPosition = randomIndex;
-      validSpawn = true;
+      const hazard = hazardTiles.find(h => h.active && h.row === r && h.col === c);
+      if (hazard) {
+        if (hazard.type === 'blue') {
+          cell.classList.add('blue-hazard');
+          cell.textContent = '🧊';
+        } else {
+          cell.classList.add('green-hazard');
+          cell.textContent = '🐌';
+        }
+      }
+      
+      if (droneActive && r === droneRow && c === droneCol) {
+        cell.classList.add('drone');
+        cell.textContent = '🛸';
+      }
+      
+      if (drone2Active && r === drone2Row && c === drone2Col) {
+        cell.classList.add('drone');
+        cell.textContent = '🛸';
+      }
+      
+      if (anomalyActive && r === anomalyRow && c === anomalyCol) {
+        cell.classList.add('anomaly');
+        cell.textContent = '🔮';
+        const countdown = document.createElement('div');
+        countdown.className = 'anomaly-countdown';
+        countdown.textContent = anomalyCountdown;
+        cell.appendChild(countdown);
+      }
+      
+      // Current player
+      if (r === playerRow && c === playerCol) {
+        cell.classList.add('player');
+        if (cellData.flagged) {
+          cell.classList.add('player-flagged');
+        } else if (!cellData.revealed) {
+          cell.textContent = '🕵️';
+        }
+      }
+      
+      // Other players (multiplayer only)
+      if (isMultiplayer) {
+        Object.entries(otherPlayers).forEach(([id, player]) => {
+          if (player.row === r && player.col === c && player.alive !== false) {
+            const otherPlayerSpan = document.createElement('span');
+            otherPlayerSpan.textContent = '👤';
+            otherPlayerSpan.style.position = 'absolute';
+            otherPlayerSpan.style.fontSize = '1.3rem';
+            otherPlayerSpan.style.filter = 'drop-shadow(0 0 3px #ff00ff)';
+            otherPlayerSpan.style.zIndex = '4';
+            cell.appendChild(otherPlayerSpan);
+          }
+        });
+      }
+      
+      if (cellData.flagged && !(r === playerRow && c === playerCol)) {
+        cell.classList.add('flagged');
+      }
+      
+      if (cellData.revealed) {
+        cell.classList.add('revealed');
+        if (cellData.mine) {
+          cell.innerHTML = '<span class="mine-icon">💣</span>';
+          if (gameOver && r === playerRow && c === playerCol) {
+            cell.classList.add('mine-hit');
+          }
+        } else if (cellData.adjacentMines > 0 && !isInterfered) {
+          cell.textContent = cellData.adjacentMines;
+          cell.classList.add(`num-${cellData.adjacentMines}`);
+        }
+        
+        if (r === playerRow && c === playerCol && !cellData.mine) {
+          const agentSpan = document.createElement('span');
+          agentSpan.textContent = '🕵️';
+          agentSpan.style.position = 'absolute';
+          agentSpan.style.fontSize = '1.3rem';
+          agentSpan.style.filter = 'drop-shadow(0 0 3px #00ffcc)';
+          cell.appendChild(agentSpan);
+        }
+      }
+      
+      maze.appendChild(cell);
     }
   }
-
-  moveTank(); // Start the tank movement towards the player
-
-  // Reset the tank timer and interval
-  tankTimer = setTimeout(() => {
-    clearInterval(tankMoveInterval);  // Stop the tank's movement
-    tankActive = false;  // Deactivate the tank
-    tankPosition = null;  // Reset the tank's position
-    renderMaze();  // Re-render the maze
-  }, 20000); // Stop the tank after 20 seconds
+  
+  scrollToPlayer();
 }
 
-function moveTank() {
-  // Clear any existing interval before starting the tank movement
-  if (tankMoveInterval) {
-    clearInterval(tankMoveInterval);
-  }
-
-  // Set the tank movement interval (450ms per move)
-  tankMoveInterval = setInterval(() => {
-    if (!tankActive) return;
-
-    const playerRow = Math.floor(playerPos / size);
-    const playerCol = playerPos % size;
-    const tankRow = Math.floor(tankPosition / size);
-    const tankCol = tankPosition % size;
-
-    let bestMove = tankPosition;
-
-    if (playerRow < tankRow) bestMove -= size; // move up
-    else if (playerRow > tankRow) bestMove += size; // move down
-    else if (playerCol < tankCol) bestMove -= 1; // move left
-    else if (playerCol > tankCol) bestMove += 1; // move right
-
-    // Move the tank to the new position
-    if (bestMove >= 0 && bestMove < mazeData.length) {
-      tankPosition = bestMove;
+function scrollToPlayer() {
+  setTimeout(() => {
+    const playerCell = document.querySelector('.cell.player');
+    if (playerCell) {
+      const rect = playerCell.getBoundingClientRect();
+      const viewportHeight = window.innerHeight;
+      const viewportWidth = window.innerWidth;
+      
+      if (rect.bottom > viewportHeight - 100 || rect.top < 100 ||
+          rect.right > viewportWidth - 100 || rect.left < 100) {
+        playerCell.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
+      }
     }
+  }, 50);
+}
 
-    // If the tank reaches the player, damage is applied
-    if (tankPosition === playerPos) {
-      takeDamage('🚓 Tank crushed you! -2 lives');
-      takeDamage(); // apply damage twice, as per your original code
-      clearInterval(tankMoveInterval);  // Stop the tank from moving
-      clearTimeout(tankTimer);  // Stop the timer for the tank
-      tankActive = false;  // Deactivate the tank
-      tankPosition = null;  // Reset the tank's position
+// ============================================================================
+// KEYBOARD CONTROLS
+// ============================================================================
+
+document.addEventListener('keydown', (e) => {
+  if (currentScreen !== 'game') {
+    if ((gameOver || gameWon) && (e.key === 'r' || e.key === 'R')) {
+      restartGame();
     }
-
-    renderMaze();  // Update the maze with the new tank position
-  }, 450); // Move the tank every 450ms
-}
-function checkWinCondition() {
-  document.getElementById('finalTime').textContent = formatTime(timeElapsed);
-
-  const traps = mazeData.filter(c => c.trap);
-  const markedTraps = mazeData.filter(c => c.trap && c.marked);
-  const incorrectMarks = mazeData.filter(c => !c.trap && c.marked);
-
-  if (traps.length > 0 && markedTraps.length === traps.length && incorrectMarks.length === 0) {
-    clearInterval(timerInterval);
-    document.getElementById('finalScore').textContent = score;
-    document.getElementById('finalDodges').textContent = dodgeCount;
-    document.getElementById('finalFails').textContent = failCount;
-    document.getElementById('scoreboard').style.display = 'block';
+    return;
   }
-
-}
-
-if (lives <= 0) {
-    clearInterval(timerInterval);
-
-    finalScore.textContent = score;
-    finalDodges.textContent = dodgeCount;
-    finalFails.textContent = failCount;
-
-    finalTitle.textContent = 'MISSION FAILED (Keep Playing To Train)';
-    finalTitle.classList.remove('text-info', 'text-success');
-    finalTitle.classList.add('text-danger');
-
-    document.getElementById('scoreboard').style.display = 'block';
+  
+  if (gameOver || gameWon) {
+    if (e.key === 'r' || e.key === 'R') {
+      restartGame();
+    }
+    return;
   }
-
-
-  document.addEventListener('keydown', (e) => {
-  if (["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].includes(e.key)) {
-    movePlayer(e.key);
-  } else if (e.key === 'q' || e.key === 'Q') {
-    attemptDodge();
-  } else if (e.key === 'r' || e.key === 'R') {
-    restartGame(); // ✅ New restart key
+  
+  if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
+    e.preventDefault();
+    
+    if (playerFrozen) {
+      showNotification('🧊 FROZEN! Cannot move!', 'danger');
+      return;
+    }
+    
+    if (moveCooldown) return;
+    
+    moveCooldown = true;
+    const delay = playerSlowed ? MOVE_DELAY * 3 : MOVE_DELAY;
+    setTimeout(() => {
+      moveCooldown = false;
+    }, delay);
+    
+    let newRow = playerRow;
+    let newCol = playerCol;
+    
+    switch(e.key) {
+      case 'ArrowUp':
+        if (playerRow > 0) newRow--;
+        break;
+      case 'ArrowDown':
+        if (playerRow < rows - 1) newRow++;
+        break;
+      case 'ArrowLeft':
+        if (playerCol > 0) newCol--;
+        break;
+      case 'ArrowRight':
+        if (playerCol < cols - 1) newCol++;
+        break;
+    }
+    
+    if (newRow !== playerRow || newCol !== playerCol) {
+      playerRow = newRow;
+      playerCol = newCol;
+      
+      // Send to server if multiplayer
+      if (isMultiplayer && socket && socket.readyState === WebSocket.OPEN) {
+        socket.send(JSON.stringify({
+          type: 'PLAYER_MOVE',
+          row: playerRow,
+          col: playerCol
+        }));
+      }
+      
+      checkDroneCaught();
+      checkProximityMines();
+      checkEMPPowerup();
+      checkTrapBombs();
+      checkHazardTiles();
+      renderGrid();
+    }
+  }
+  else if (e.key === ' ') {
+    e.preventDefault();
+    scanCurrentTile();
+  }
+  else if (e.key === 'f' || e.key === 'F') {
+    e.preventDefault();
+    toggleFlag();
+  }
+  else if (e.key === 'e' || e.key === 'E') {
+    e.preventDefault();
+    useEMP();
+  }
+  else if (e.key === 'r' || e.key === 'R') {
+    e.preventDefault();
+    restartGame();
   }
 });
 
+// ============================================================================
+// PLAYER ACTIONS
+// ============================================================================
 
-function restartGame() {
-  triggerFlash();
-
-  // Stop any running intervals and timers
-  clearInterval(timerInterval);     // Stop old timer
-  clearInterval(beaconTimer);        // Stop beacon timer
-  clearInterval(powerUpTimer);       // Stop power-up timer if you have it
-  clearInterval(mysteryTimer);       // Stop mystery tile timer if you have it
-  clearInterval(tankTimer);          // Stop tank spawn if you have it
-  clearInterval(tankMoveInterval);   // Clear the tank movement interval (important!)
-
-  // Reset variables
-  score = 0;
-  lives = 3;
-  dodgeCount = 0;
-  failCount = 0;
-  timeElapsed = 0;
-  tankActive = false;
-  mysteryTileActive = false;
-  idleTime = 0;
-
-  // Hide scoreboard
-  document.getElementById('scoreboard').style.display = 'none';
-
-  // Update UI
-  scoreDisplay.textContent = score;
-  livesDisplay.textContent = lives;
-  timerDisplay.textContent = formatTime(timeElapsed);
-  document.getElementById('dodgeCount').textContent = dodgeCount;
-  document.getElementById('failCount').textContent = failCount;
-
-  // Clear and regenerate the maze
-  generateMaze();
-  updateVisibility();
-  renderMaze();
-
-  // Start timers again
-  startTimer();
-  startBeaconTimer();
-  powerUpTimer = setInterval(placePowerUps, 15000); // Adds random power-ups to mazeData
-  mysteryTimer = setInterval(spawnMysteryTile, 25000); // Mystery tiles every 25 seconds
-  tankTimer = setInterval(spawnTank, 45000); // Tank spawns every 45 seconds
-
-  showNotification('🔄 New Mission Initiated!', 'info');
+function scanCurrentTile() {
+  if (gameOver || gameWon) return;
+  
+  const cell = grid[playerRow][playerCol];
+  if (cell.revealed || cell.flagged) return;
+  
+  // Single player - place mines on first click
+  if (!isMultiplayer && firstClick) {
+    placeMines(playerRow, playerCol);
+    firstClick = false;
+    startTimer();
+  }
+  
+  // Multiplayer - send to server
+  if (isMultiplayer && socket && socket.readyState === WebSocket.OPEN) {
+    socket.send(JSON.stringify({
+      type: 'SCAN_TILE',
+      row: playerRow,
+      col: playerCol
+    }));
+    return;
+  }
+  
+  // Single player - handle locally
+  if (cell.mine) {
+    cell.revealed = true;
+    gameOver = true;
+    streak = 0;
+    document.body.classList.add('shake');
+    setTimeout(() => document.body.classList.remove('shake'), 300);
+    revealAllMines();
+    renderGrid();
+    stopTimer();
+    clearAllTimers();
+    showGameOver();
+    return;
+  }
+  
+  if (anomalyActive && playerRow === anomalyRow && playerCol === anomalyCol) {
+    clearInterval(anomalyCountdownInterval);
+    anomalyActive = false;
+    showNotification('🔮 Anomaly Neutralized!', 'success');
+  }
+  
+  streak++;
+  updateStats();
+  
+  revealCell(playerRow, playerCol);
+  renderGrid();
+  updateStats();
+  checkWin();
 }
 
+function toggleFlag() {
+  if (gameOver || gameWon) return;
+  
+  const cell = grid[playerRow][playerCol];
+  if (cell.revealed) return;
+  
+  // Multiplayer - send to server
+  if (isMultiplayer && socket && socket.readyState === WebSocket.OPEN) {
+    socket.send(JSON.stringify({
+      type: 'TOGGLE_FLAG',
+      row: playerRow,
+      col: playerCol
+    }));
+    return;
+  }
+  
+  // Single player - handle locally
+  cell.flagged = !cell.flagged;
+  flagCount += cell.flagged ? 1 : -1;
+  
+  if (anomalyActive && playerRow === anomalyRow && playerCol === anomalyCol && cell.flagged) {
+    clearInterval(anomalyCountdownInterval);
+    anomalyActive = false;
+    showNotification('🔮 Anomaly Neutralized!', 'success');
+  }
+  
+  renderGrid();
+  updateStats();
+}
+
+function revealCell(row, col) {
+  if (row < 0 || row >= rows || col < 0 || col >= cols) return;
+  
+  const cell = grid[row][col];
+  if (cell.revealed || cell.flagged || cell.mine) return;
+  
+  cell.revealed = true;
+  revealedCount++;
+  
+  const cellElement = document.querySelector(`[data-row="${row}"][data-col="${col}"]`);
+  if (cellElement) {
+    cellElement.classList.add('cascade-reveal');
+  }
+  
+  if (cell.adjacentMines === 0) {
+    for (let dr = -1; dr <= 1; dr++) {
+      for (let dc = -1; dc <= 1; dc++) {
+        if (dr === 0 && dc === 0) continue;
+        setTimeout(() => revealCell(row + dr, col + dc), 20);
+      }
+    }
+  }
+}
+
+function revealAllMines() {
+  for (let r = 0; r < rows; r++) {
+    for (let c = 0; c < cols; c++) {
+      if (grid[r][c].mine) {
+        grid[r][c].revealed = true;
+      }
+    }
+  }
+}
+
+function checkWin() {
+  const totalCells = rows * cols;
+  const nonMineCells = totalCells - mineCount;
+  
+  if (revealedCount === nonMineCells) {
+    gameWon = true;
+    stopTimer();
+    clearAllTimers();
+    
+    for (let r = 0; r < rows; r++) {
+      for (let c = 0; c < cols; c++) {
+        if (grid[r][c].mine && !grid[r][c].flagged) {
+          grid[r][c].flagged = true;
+          flagCount++;
+        }
+      }
+    }
+    
+    renderGrid();
+    updateStats();
+    showGameWin();
+  }
+}
+
+// ============================================================================
+// STATS & TIMER
+// ============================================================================
+
+function updateStats() {
+  document.getElementById('mineCount').textContent = mineCount;
+  document.getElementById('flagCount').textContent = flagCount;
+  document.getElementById('tilesLeft').textContent = (rows * cols) - mineCount - revealedCount;
+  document.getElementById('streakCount').textContent = streak;
+  document.getElementById('empCharges').textContent = empCharges;
+}
 
 function startTimer() {
-  timeElapsed = 0;
-  timerDisplay.textContent = formatTime(timeElapsed);
   timerInterval = setInterval(() => {
     timeElapsed++;
-    timerDisplay.textContent = formatTime(timeElapsed);
+    document.getElementById('timer').textContent = String(timeElapsed).padStart(3, '0');
   }, 1000);
 }
 
-function formatTime(seconds) {
-  const mins = Math.floor(seconds / 60);
-  const secs = seconds % 60;
-  return `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+function stopTimer() {
+  if (timerInterval) {
+    clearInterval(timerInterval);
+    timerInterval = null;
+  }
 }
 
-function toggleMarkTile() {
-  const cell = mazeData[playerPos];
-  if (!cell.visible) return;
-  cell.marked = !cell.marked;
-  renderMaze();
+// ============================================================================
+// GAME HAZARDS & OBSTACLES
+// ============================================================================
+
+function spawnDrone() {
+  if (droneActive || gameOver || gameWon) return;
+  
+  droneActive = true;
+  showNotification('🛸 DRONE DETECTED! EVADE!', 'danger');
+  
+  const edge = Math.floor(Math.random() * 4);
+  switch(edge) {
+    case 0: droneRow = 0; droneCol = Math.floor(Math.random() * cols); break;
+    case 1: droneRow = rows - 1; droneCol = Math.floor(Math.random() * cols); break;
+    case 2: droneRow = Math.floor(Math.random() * rows); droneCol = 0; break;
+    case 3: droneRow = Math.floor(Math.random() * rows); droneCol = cols - 1; break;
+  }
+  
+  renderGrid();
+  
+  droneInterval = setInterval(() => {
+    if (!droneActive || gameOver || gameWon) return;
+    
+    if (droneRow < playerRow) droneRow++;
+    else if (droneRow > playerRow) droneRow--;
+    else if (droneCol < playerCol) droneCol++;
+    else if (droneCol > playerCol) droneCol--;
+    
+    checkDroneCaught();
+    renderGrid();
+  }, 600);
 }
 
+function spawnDrone2() {
+  if (drone2Active || gameOver || gameWon) return;
+  
+  drone2Active = true;
+  showNotification('🛸🛸 SECOND DRONE DEPLOYED!', 'danger');
+  
+  const edge = Math.floor(Math.random() * 4);
+  switch(edge) {
+    case 0: drone2Row = 0; drone2Col = Math.floor(Math.random() * cols); break;
+    case 1: drone2Row = rows - 1; drone2Col = Math.floor(Math.random() * cols); break;
+    case 2: drone2Row = Math.floor(Math.random() * rows); drone2Col = 0; break;
+    case 3: drone2Row = Math.floor(Math.random() * rows); drone2Col = cols - 1; break;
+  }
+  
+  renderGrid();
+  
+  drone2Interval = setInterval(() => {
+    if (!drone2Active || gameOver || gameWon) return;
+    
+    if (drone2Row < playerRow) drone2Row++;
+    else if (drone2Row > playerRow) drone2Row--;
+    else if (drone2Col < playerCol) drone2Col++;
+    else if (drone2Col > playerCol) drone2Col--;
+    
+    checkDroneCaught();
+    renderGrid();
+  }, 500);
+}
 
+function checkDroneCaught() {
+  if (droneActive && droneRow === playerRow && droneCol === playerCol) {
+    gameOver = true;
+    droneActive = false;
+    drone2Active = false;
+    
+    showNotification('🛸 DRONE CAPTURED YOU! MISSION FAILED!', 'danger');
+    document.body.classList.add('shake');
+    setTimeout(() => document.body.classList.remove('shake'), 300);
+    
+    revealAllMines();
+    renderGrid();
+    stopTimer();
+    clearAllTimers();
+    
+    setTimeout(() => {
+      document.getElementById('failTime').textContent = timeElapsed;
+      document.getElementById('failStreak').textContent = streak;
+      const modal = new bootstrap.Modal(document.getElementById('gameOverModal'));
+      modal.show();
+    }, 500);
+    
+    return;
+  }
+  
+  if (drone2Active && drone2Row === playerRow && drone2Col === playerCol) {
+    gameOver = true;
+    droneActive = false;
+    drone2Active = false;
+    
+    showNotification('🛸 DRONE 2 CAPTURED YOU! MISSION FAILED!', 'danger');
+    document.body.classList.add('shake');
+    setTimeout(() => document.body.classList.remove('shake'), 300);
+    
+    revealAllMines();
+    renderGrid();
+    stopTimer();
+    clearAllTimers();
+    
+    setTimeout(() => {
+      document.getElementById('failTime').textContent = timeElapsed;
+      document.getElementById('failStreak').textContent = streak;
+      const modal = new bootstrap.Modal(document.getElementById('gameOverModal'));
+      modal.show();
+    }, 500);
+  }
+}
 
+function spawnAnomaly() {
+  if (anomalyActive || gameOver || gameWon) return;
+  
+  const revealedTiles = [];
+  for (let r = 0; r < rows; r++) {
+    for (let c = 0; c < cols; c++) {
+      if (grid[r][c].revealed) {
+        revealedTiles.push({r, c});
+      }
+    }
+  }
+  
+  if (revealedTiles.length === 0) return;
+  
+  const randomRevealed = revealedTiles[Math.floor(Math.random() * revealedTiles.length)];
+  
+  const candidates = [];
+  for (let dr = -4; dr <= 4; dr++) {
+    for (let dc = -4; dc <= 4; dc++) {
+      const nr = randomRevealed.r + dr;
+      const nc = randomRevealed.c + dc;
+      const distance = Math.abs(dr) + Math.abs(dc);
+      
+      if (nr >= 0 && nr < rows && nc >= 0 && nc < cols && 
+          !grid[nr][nc].revealed && distance >= 2 && distance <= 4) {
+        candidates.push({r: nr, c: nc});
+      }
+    }
+  }
+  
+  if (candidates.length === 0) return;
+  
+  const chosen = candidates[Math.floor(Math.random() * candidates.length)];
+  anomalyRow = chosen.r;
+  anomalyCol = chosen.c;
+  anomalyActive = true;
+  anomalyCountdown = 6;
+  
+  showNotification('🔮 Anomaly Detected! Re-covering in 6s...', 'info');
+  renderGrid();
+  
+  if (anomalyCountdownInterval) clearInterval(anomalyCountdownInterval);
+  anomalyCountdownInterval = setInterval(() => {
+    anomalyCountdown--;
+    if (anomalyCountdown <= 0) {
+      triggerAnomalyRecover();
+    } else {
+      renderGrid();
+    }
+  }, 1000);
+}
 
-    document.getElementById('startGameBtn').addEventListener('click', () => {
-      document.getElementById('titleScreen').classList.add('d-none');
-      document.getElementById('gameSection').classList.remove('d-none');
+function triggerAnomalyRecover() {
+  if (!anomalyActive) return;
+  
+  clearInterval(anomalyCountdownInterval);
+  anomalyActive = false;
+  
+  showNotification('🔮 ANOMALY RE-COVERED AREA!', 'warning');
+  
+  const recoveredCells = [];
+  
+  for (let dr = -2; dr <= 2; dr++) {
+    for (let dc = -2; dc <= 2; dc++) {
+      const nr = anomalyRow + dr;
+      const nc = anomalyCol + dc;
+      if (nr >= 0 && nr < rows && nc >= 0 && nc < cols) {
+        const cell = grid[nr][nc];
+        
+        if (cell.revealed && !cell.mine) {
+          cell.revealed = false;
+          revealedCount--;
+          recoveredCells.push({row: nr, col: nc});
+        }
+      }
+    }
+  }
+  
+  recoveredCells.forEach((pos, index) => {
+    setTimeout(() => {
+      const cellElement = document.querySelector(`[data-row="${pos.row}"][data-col="${pos.col}"]`);
+      if (cellElement) {
+        cellElement.classList.add('anomaly-transform');
+        setTimeout(() => cellElement.classList.remove('anomaly-transform'), 800);
+      }
+    }, index * 30);
+  });
+  
+  renderGrid();
+  updateStats();
+}
 
-      generateMaze();
-      updateVisibility();
-      renderMaze();
-      startTimer();
-      setInterval(placePowerUps, 15000);
-      startBeaconTimer();
-      setInterval(spawnMysteryTile, 25000);
-      setInterval(spawnTank, 45000);
-      renderMaze();
-      checkClearCondition();
+function spawnProximityMine() {
+  if (gameOver || gameWon) return;
+  
+  let validSpawn = false;
+  let spawnRow, spawnCol;
+  
+  while (!validSpawn) {
+    spawnRow = Math.floor(Math.random() * rows);
+    spawnCol = Math.floor(Math.random() * cols);
+    const distance = Math.abs(spawnRow - playerRow) + Math.abs(spawnCol - playerCol);
+    
+    if (distance >= 5 && !grid[spawnRow][spawnCol].revealed) {
+      validSpawn = true;
+    }
+  }
+  
+  const proxMine = {
+    row: spawnRow,
+    col: spawnCol,
+    countdown: 4,
+    active: true
+  };
+  
+  proximityMines.push(proxMine);
+  showNotification('💥 PROXIMITY MINE DETECTED!', 'danger');
+  renderGrid();
+  
+  const countdownInterval = setInterval(() => {
+    if (gameOver || gameWon || !proxMine.active) {
+      clearInterval(countdownInterval);
+      return;
+    }
+    
+    const distance = Math.abs(proxMine.row - playerRow) + Math.abs(proxMine.col - playerCol);
+    
+    if (distance <= 3) {
+      proxMine.countdown--;
+      if (proxMine.countdown <= 0) {
+        detonateProximityMine(proxMine);
+        clearInterval(countdownInterval);
+      }
+    } else {
+      proxMine.countdown = 4;
+    }
+    
+    renderGrid();
+  }, 1000);
+}
 
-    });
+function detonateProximityMine(proxMine) {
+  proxMine.active = false;
+  
+  const playerDistance = Math.max(
+    Math.abs(proxMine.row - playerRow),
+    Math.abs(proxMine.col - playerCol)
+  );
+  
+  if (playerDistance <= 2) {
+    gameOver = true;
+    
+    showNotification('💥 PROXIMITY MINE KILLED YOU! MISSION FAILED!', 'danger');
+    document.body.classList.add('shake');
+    setTimeout(() => document.body.classList.remove('shake'), 300);
+    
+    revealAllMines();
+    renderGrid();
+    stopTimer();
+    clearAllTimers();
+    
+    setTimeout(() => {
+      document.getElementById('failTime').textContent = timeElapsed;
+      document.getElementById('failStreak').textContent = streak;
+      const modal = new bootstrap.Modal(document.getElementById('gameOverModal'));
+      modal.show();
+    }, 500);
+    
+    return;
+  }
+  
+  showNotification('💥 PROXIMITY MINE DETONATED!', 'danger');
+  document.body.classList.add('shake');
+  setTimeout(() => document.body.classList.remove('shake'), 300);
+  
+  for (let dr = -2; dr <= 2; dr++) {
+    for (let dc = -2; dc <= 2; dc++) {
+      const nr = proxMine.row + dr;
+      const nc = proxMine.col + dc;
+      if (nr >= 0 && nr < rows && nc >= 0 && nc < cols) {
+        const cell = grid[nr][nc];
+        if (cell.revealed && !cell.mine) {
+          cell.revealed = false;
+          revealedCount--;
+        }
+      }
+    }
+  }
+  
+  renderGrid();
+  updateStats();
+}
 
-function showDodgeMessage() {
-  const msg = document.getElementById('dodgeMessage');
-  msg.classList.remove('d-none');
-  msg.style.opacity = '1';
+function checkProximityMines() {
+  proximityMines.forEach(proxMine => {
+    if (!proxMine.active) return;
+    const distance = Math.abs(proxMine.row - playerRow) + Math.abs(proxMine.col - playerCol);
+    
+    if (distance <= 3 && proxMine.countdown === 4) {
+      showNotification('⚠️ PROXIMITY MINE ARMED!', 'warning');
+    }
+  });
+}
 
+function triggerStaticInterference() {
+  if (gameOver || gameWon || staticInterferenceActive) return;
+  
+  staticInterferenceActive = true;
+  interferenceCells = [];
+  
+  const revealedTiles = [];
+  for (let r = 0; r < rows; r++) {
+    for (let c = 0; c < cols; c++) {
+      if (grid[r][c].revealed) {
+        revealedTiles.push({r, c});
+      }
+    }
+  }
+  
+  const count = Math.min(9 + Math.floor(Math.random() * 6), revealedTiles.length);
+  for (let i = 0; i < count; i++) {
+    const randomIndex = Math.floor(Math.random() * revealedTiles.length);
+    interferenceCells.push(revealedTiles.splice(randomIndex, 1)[0]);
+  }
+  
+  showNotification('⚡ STATIC INTERFERENCE!', 'warning');
+  renderGrid();
+  
   setTimeout(() => {
-    msg.classList.add('d-none');
-  }, 2000);
+    staticInterferenceActive = false;
+    interferenceCells = [];
+    renderGrid();
+  }, 10000);
 }
+
+function triggerEMPBlackout() {
+  if (gameOver || gameWon || empBlackoutActive) return;
+  
+  empBlackoutActive = true;
+  document.getElementById('maze').classList.add('emp-blackout');
+  showNotification('🌑 EMP BLACKOUT!', 'danger');
+  
+  setTimeout(() => {
+    empBlackoutActive = false;
+    document.getElementById('maze').classList.remove('emp-blackout');
+  }, 6000);
+}
+
+function spawnHazardTile() {
+  if (gameOver || gameWon) return;
+  
+  const isBlue = Math.random() < 0.5;
+  const type = isBlue ? 'blue' : 'green';
+  
+  let validSpawn = false;
+  let spawnRow, spawnCol;
+  let attempts = 0;
+  
+  while (!validSpawn && attempts < 100) {
+    spawnRow = Math.floor(Math.random() * rows);
+    spawnCol = Math.floor(Math.random() * cols);
+    const distance = Math.abs(spawnRow - playerRow) + Math.abs(spawnCol - playerCol);
+    
+    if (!grid[spawnRow][spawnCol].revealed && distance >= 3) {
+      validSpawn = true;
+    }
+    attempts++;
+  }
+  
+  if (!validSpawn) return;
+  
+  const hazard = {
+    row: spawnRow,
+    col: spawnCol,
+    type: type,
+    active: true
+  };
+  
+  hazardTiles.push(hazard);
+  
+  if (type === 'blue') {
+    showNotification('🧊 FREEZE HAZARD SPAWNED!', 'info');
+  } else {
+    showNotification('🐌 SLOW HAZARD SPAWNED!', 'info');
+  }
+  
+  renderGrid();
+  
+  setTimeout(() => {
+    hazard.active = false;
+    const index = hazardTiles.indexOf(hazard);
+    if (index > -1) {
+      hazardTiles.splice(index, 1);
+    }
+    renderGrid();
+  }, 10000);
+}
+
+function checkHazardTiles() {
+  hazardTiles.forEach(hazard => {
+    if (!hazard.active) return;
+    
+    if (hazard.row === playerRow && hazard.col === playerCol) {
+      hazard.active = false;
+      const index = hazardTiles.indexOf(hazard);
+      if (index > -1) {
+        hazardTiles.splice(index, 1);
+      }
+      
+      if (hazard.type === 'blue') {
+        playerFrozen = true;
+        showNotification('🧊 FROZEN! Can\'t move for 1s!', 'warning');
+        setTimeout(() => {
+          playerFrozen = false;
+          if (!gameOver && !gameWon) {
+            showNotification('✓ Freeze ended', 'success');
+          }
+        }, 1000);
+      } else {
+        playerSlowed = true;
+        showNotification('🐌 SLOWED! Movement delayed for 4s!', 'warning');
+        setTimeout(() => {
+          playerSlowed = false;
+          if (!gameOver && !gameWon) {
+            showNotification('✓ Slow effect ended', 'success');
+          }
+        }, 4000);
+      }
+    }
+  });
+}
+
+// ============================================================================
+// EMP POWERUP
+// ============================================================================
+
+function spawnEMPPowerup() {
+  if (empPowerupActive || gameOver || gameWon) return;
+  
+  let validSpawn = false;
+  let spawnRow, spawnCol;
+  let attempts = 0;
+  
+  while (!validSpawn && attempts < 100) {
+    spawnRow = Math.floor(Math.random() * rows);
+    spawnCol = Math.floor(Math.random() * cols);
+    const distance = Math.abs(spawnRow - playerRow) + Math.abs(spawnCol - playerCol);
+    
+    const hasRoom = spawnRow > 0 && spawnRow < rows - 1 && 
+                    spawnCol > 0 && spawnCol < cols - 1;
+    
+    if (hasRoom && !grid[spawnRow][spawnCol].revealed && distance >= 4) {
+      validSpawn = true;
+    }
+    attempts++;
+  }
+  
+  if (!validSpawn) return;
+  
+  empPowerupRow = spawnRow;
+  empPowerupCol = spawnCol;
+  empPowerupActive = true;
+  empTrapBombs = [];
+  
+  const adjacentPositions = [];
+  for (let dr = -1; dr <= 1; dr++) {
+    for (let dc = -1; dc <= 1; dc++) {
+      if (dr === 0 && dc === 0) continue;
+      adjacentPositions.push({
+        row: spawnRow + dr,
+        col: spawnCol + dc
+      });
+    }
+  }
+  
+  const shuffled = adjacentPositions.sort(() => Math.random() - 0.5);
+  const safePositions = shuffled.slice(0, 3);
+  
+  adjacentPositions.forEach(pos => {
+    if (!safePositions.some(safe => safe.row === pos.row && safe.col === pos.col)) {
+      empTrapBombs.push(pos);
+    }
+  });
+  
+  showNotification('⚡ EMP POWERUP SPAWNED! Beware of traps!', 'warning');
+  renderGrid();
+  
+  if (empPowerupTimeout) clearTimeout(empPowerupTimeout);
+  empPowerupTimeout = setTimeout(() => {
+    if (empPowerupActive && !gameOver && !gameWon) {
+      empPowerupActive = false;
+      empTrapBombs = [];
+      empPowerupTimeout = null;
+      showNotification('⚡ EMP POWERUP EXPIRED!', 'warning');
+      renderGrid();
+    }
+  }, 12000);
+}
+
+function useEMP() {
+  if (empCharges <= 0) {
+    showNotification('⚡ No EMP charges available!', 'danger');
+    return;
+  }
+  
+  empCharges--;
+  updateStats();
+  
+  showNotification('⚡ EMP ACTIVATED! Drones disabled for 8s!', 'success');
+  
+  const wasDroneActive = droneActive;
+  const wasDrone2Active = drone2Active;
+  
+  droneActive = false;
+  drone2Active = false;
+  
+  if (droneInterval) {
+    clearInterval(droneInterval);
+    droneInterval = null;
+  }
+  if (drone2Interval) {
+    clearInterval(drone2Interval);
+    drone2Interval = null;
+  }
+  
+  renderGrid();
+  
+  setTimeout(() => {
+    if (wasDroneActive && !gameOver && !gameWon) {
+      droneActive = true;
+      droneInterval = setInterval(() => {
+        if (!droneActive || gameOver || gameWon) return;
+        
+        if (droneRow < playerRow) droneRow++;
+        else if (droneRow > playerRow) droneRow--;
+        else if (droneCol < playerCol) droneCol++;
+        else if (droneCol > playerCol) droneCol--;
+        
+        checkDroneCaught();
+        renderGrid();
+      }, 600);
+    }
+    
+    if (wasDrone2Active && !gameOver && !gameWon) {
+      drone2Active = true;
+      drone2Interval = setInterval(() => {
+        if (!drone2Active || gameOver || gameWon) return;
+        
+        if (drone2Row < playerRow) drone2Row++;
+        else if (drone2Row > playerRow) drone2Row--;
+        else if (drone2Col < playerCol) drone2Col++;
+        else if (drone2Col > playerCol) drone2Col--;
+        
+        checkDroneCaught();
+        renderGrid();
+      }, 500);
+    }
+    
+    if ((wasDroneActive || wasDrone2Active) && !gameOver && !gameWon) {
+      showNotification('⚡ EMP effect worn off!', 'warning');
+    }
+  }, 8000);
+}
+
+function checkEMPPowerup() {
+  if (empPowerupActive && playerRow === empPowerupRow && playerCol === empPowerupCol) {
+    empPowerupActive = false;
+    empCharges++;
+    empTrapBombs = [];
+    
+    if (empPowerupTimeout) {
+      clearTimeout(empPowerupTimeout);
+      empPowerupTimeout = null;
+    }
+    
+    showNotification('⚡ EMP CHARGE COLLECTED! Press E to use!', 'success');
+    updateStats();
+  }
+}
+
+function checkTrapBombs() {
+  const hitTrapBomb = empTrapBombs.find(bomb => bomb.row === playerRow && bomb.col === playerCol);
+  
+  if (hitTrapBomb) {
+    gameOver = true;
+    empPowerupActive = false;
+    empTrapBombs = [];
+    
+    if (empPowerupTimeout) {
+      clearTimeout(empPowerupTimeout);
+      empPowerupTimeout = null;
+    }
+    
+    showNotification('💥 TRAP BOMB DETONATED! MISSION FAILED!', 'danger');
+    document.body.classList.add('shake');
+    setTimeout(() => document.body.classList.remove('shake'), 300);
+    
+    revealAllMines();
+    renderGrid();
+    stopTimer();
+    clearAllTimers();
+    
+    setTimeout(() => {
+      document.getElementById('failTime').textContent = timeElapsed;
+      document.getElementById('failStreak').textContent = streak;
+      const modal = new bootstrap.Modal(document.getElementById('gameOverModal'));
+      modal.show();
+    }, 500);
+  }
+}
+
+// ============================================================================
+// UI & NOTIFICATIONS
+// ============================================================================
 
 function showNotification(message, type = 'info') {
-  const note = document.getElementById('gameNotification');
-  note.textContent = message;
-  const bgClass = {
-    success: 'bg-success',
-    danger: 'bg-danger',
-    warning: 'bg-warning text-dark',
-    info: 'bg-info text-dark'
-  }[type] || 'bg-secondary';
-  note.className = `position-fixed top-0 start-50 translate-middle-x mt-3 text-white rounded shadow px-4 py-2 fw-bold text-center ${bgClass}`;
-  note.classList.remove('d-none');
-  setTimeout(() => note.classList.add('d-none'), 2000);
+  const notif = document.createElement('div');
+  notif.className = `notification ${type}`;
+  notif.textContent = message;
+  document.body.appendChild(notif);
+  
+  setTimeout(() => {
+    notif.style.animation = 'slideDown 0.3s ease reverse';
+    setTimeout(() => notif.remove(), 300);
+  }, 3000);
 }
+
+function showGameOver() {
+  setTimeout(() => {
+    document.getElementById('failTime').textContent = timeElapsed;
+    document.getElementById('failStreak').textContent = streak;
+    const modal = new bootstrap.Modal(document.getElementById('gameOverModal'));
+    modal.show();
+  }, 500);
+}
+
+function showGameWin() {
+  setTimeout(() => {
+    document.getElementById('winTime').textContent = timeElapsed;
+    document.getElementById('winStreak').textContent = streak;
+    const modal = new bootstrap.Modal(document.getElementById('gameWinModal'));
+    modal.show();
+  }, 300);
+}
+
+function triggerFlash() {
+  const flash = document.getElementById('flash');
+  flash.style.opacity = '1';
+  setTimeout(() => {
+    flash.style.opacity = '0';
+  }, 200);
+}
+
+function restartGame() {
+  triggerFlash();
+  setTimeout(() => {
+    currentScreen = 'game';
+    if (isMultiplayer) {
+      // Can't restart in multiplayer
+      showNotification('Cannot restart in multiplayer mode', 'warning');
+      return;
+    }
+    startGame(rows, cols, mineCount);
+  }, 200);
+}
+
+// ============================================================================
+// BUTTON HANDLERS
+// ============================================================================
+
+document.getElementById('retryBtn').addEventListener('click', () => {
+  if (isMultiplayer) {
+    document.getElementById('gameScreen').classList.add('d-none');
+    document.getElementById('lobbyScreen').classList.remove('d-none');
+    currentScreen = 'lobby';
+  } else {
+    startGame(rows, cols, mineCount);
+  }
+});
+
+document.getElementById('playAgainBtn').addEventListener('click', () => {
+  if (isMultiplayer) {
+    document.getElementById('gameScreen').classList.add('d-none');
+    document.getElementById('lobbyScreen').classList.remove('d-none');
+    currentScreen = 'lobby';
+  } else {
+    startGame(rows, cols, mineCount);
+  }
+});
+
+document.getElementById('newGameBtn').addEventListener('click', () => {
+  currentScreen = 'title';
+  document.getElementById('gameScreen').classList.add('d-none');
+  document.getElementById('titleScreen').classList.remove('d-none');
+  stopTimer();
+  clearAllTimers();
+});
+
 </script>
 </body>
 </html>
